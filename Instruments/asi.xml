@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<!-- Speedometer Type 3 Rev 2 -->
+<PropertyList>
+ <path>asi.ac</path>
+
+ <animation>
+  <type>rotate</type>
+  <object-name>ASI.needle</object-name>
+  <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+  <interpolation>
+   <entry><ind>0</ind><dep>0</dep></entry>
+   <entry><ind>200</ind><dep>120</dep></entry>
+   <entry><ind>400</ind><dep>180</dep></entry>
+   <entry><ind>800</ind><dep>300</dep></entry>
+   </interpolation>
+  <axis>
+   <x>-1</x>
+   <y>0</y>
+   <z>0</z>
+  </axis>
+ </animation>
+
+</PropertyList>
+

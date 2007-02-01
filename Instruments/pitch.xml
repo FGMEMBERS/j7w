@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+  <path>pitch.ac</path>
+
+  <animation>
+    <type>rotate</type>
+    <object-name>bar</object-name>
+    <property>/orientation/pitch-deg</property>
+    <interpolation>
+    <entry><ind>-15</ind><dep>12</dep></entry>
+    <entry><ind>15</ind><dep>-12</dep></entry>
+    </interpolation>
+    <center>
+      <x-m>-0.18</x-m>
+      <y-m>0</y-m>
+      <z-m>0</z-m>
+    </center>
+    <axis>
+      <x>0</x>
+      <y>1</y>
+      <z>0</z>
+    </axis>
+  </animation>
+</PropertyList>
