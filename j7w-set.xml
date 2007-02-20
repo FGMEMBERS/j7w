@@ -67,10 +67,12 @@ Jan. 10 Tat Nishioka
     <help>
       <title>J7W Shinden</title>
       <line></line>
+<!--
       <key>
         <name>CTRL-B</name>
         <desc>Toggle Super Charger (2 stages)</desc>
       </key>
+-->
 <!--
       <key>
         <name>CTRL-D</name>
@@ -78,12 +80,28 @@ Jan. 10 Tat Nishioka
       </key>
 -->
       <key>
+        <name>Shift-d</name>
+        <desc>Decrease Hydraulic Torque Converter Pressure (Decrease Boost)</desc>
+      </key>
+      <key>
+        <name>d</name>
+        <desc>Increase Hydraulic Torque Converter Pressure (Increase Boost)</desc>
+      </key>
+      <key>
         <name>Shift-e</name>
         <desc>Trim Aileron right</desc>
       </key>
       <key>
         <name>e</name>
         <desc>Trim Aileron left</desc>
+      </key>
+      <key>
+        <name>Shift-f</name>
+        <desc>Decrease Water Methanol Injection</desc>
+      </key>
+      <key>
+        <name>f</name>
+        <desc>Increase Water Methanol Injection</desc>
       </key>
       <key>
         <name>Shift-n</name>
@@ -111,6 +129,8 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
 
       </text>
     </help>
+
+    <tutorial include="j7w-tutorial.xml"></tutorial>
   </sim>
 
   <engines>
@@ -150,7 +170,7 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
     <engines>
       <engine n="0">
 	<magnetos>3</magnetos>
-	<boost>1.0</boost>
+	<raw-boost>0.30</raw-boost>
 	<propeller-pitch>1.0</propeller-pitch>
       </engine>
     </engines>
@@ -162,12 +182,13 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
   
   <input>
    <keyboard>
+<!--
     <key n="2">
       <name>Ctrl-B</name>
       <desc>Toggle engine boost.</desc>
       <binding>
         <command>property-adjust</command>
-        <property>/controls/engines/engine[0]/boost</property>
+        <property>/controls/engines/engine[0]/raw-boost</property>
         <step type="double">0.33</step>
         <min type="double">0.0</min>
         <max type="double">1.5</max>
@@ -175,26 +196,27 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
       <binding>
         <condition>
           <greater-than>
-            <property>/controls/engines/engine[0]/boost</property>
+            <property>/controls/engines/engine[0]/raw-boost</property>
             <value type="double">1.0001</value>
           </greater-than>
         </condition>
         <command>property-assign</command>
-        <property>/controls/engines/engine[0]/boost</property>
+        <property>/controls/engines/engine[0]/raw-boost</property>
         <value type="double">0.0</value>
       </binding>
       <binding>        
         <condition>    
           <greater-than>         
-            <property>/controls/engines/engine[0]/boost</property>       
+            <property>/controls/engines/engine[0]/raw-boost</property>       
             <value type="double">0.6</value>    
           </greater-than>        
         </condition>   
         <command>property-assign</command>     
-        <property>/controls/engines/engine[0]/boost</property>         
+        <property>/controls/engines/engine[0]/raw-boost</property>         
         <value type="double">1.0</value>       
       </binding>
     </key>
+-->
 
     <key n="4">
       <name>Ctrl-D</name>
@@ -202,6 +224,19 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
       <binding>
         <command>property-toggle</command>
         <property>controls/canopy/opened</property>
+      </binding>
+    </key>
+
+    <key n="68">
+      <name>D</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Decrease Hydraulic Torque Converter Pressure.</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/engines/engine/raw-boost</property>
+        <step type="double">-0.05</step>
+        <min type="double">0.0</min>
+        <max type="double">1.0</max>
       </binding>
     </key>
 
@@ -216,6 +251,32 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
       </binding>
     </key>
 
+    <key n="70">
+      <name>F</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Decrease Water Methanol Injection</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/engines/engine/water-methanol-injection</property>
+        <step type="double">-0.1</step>
+        <min type="double">0.0</min>
+        <max type="double">1.0</max>
+      </binding>
+    </key>
+
+    <key n="100">
+      <name>d</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Increase Hydraulic Torque Converter Pressure.</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/engines/engine/raw-boost</property>
+        <step type="double">0.05</step>
+        <min type="double">0.0</min>
+        <max type="double">1.0</max>
+      </binding>
+    </key>
+
     <key n="101">
       <name>e</name>
       <repeatable type="bool">true</repeatable>
@@ -226,12 +287,26 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
         <step type="double">-0.001</step>
       </binding>
     </key>
+
+    <key n="102">
+      <name>f</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Increase Water Methanol Injection</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/engines/engine/water-methanol-injection</property>
+        <step type="double">0.1</step>
+        <min type="double">0.0</min>
+        <max type="double">1.0</max>
+      </binding>
+    </key>
   </keyboard>
 </input>
 
 <nasal>
   <j7w>
     <file>Aircraft/j7w/Nasal/electrical.nas</file>
+    <file>Aircraft/j7w/Nasal/jwarbirds.nas</file>
     <file>Aircraft/j7w/Nasal/j7w.nas</file>
   </j7w>
 </nasal>

@@ -10,7 +10,6 @@ References
 [2] http://www.warbirds.jp/kakuki/sanko/en_japan.htm (Japanese)
 [3] http://www.geocities.co.jp/Playtown-Spade/2631/start-j.html (Japanese)
 [4] http://gunsight.jp/a/hunatu05.htm (Japanese)
-# commented-out parameters are not implemented yet or should be revised
 ************************************************************************
 Note: This aircraft is still in its experimental stage. 
 Very unstable behavior will crash the aircraft very often, so be patient 
@@ -34,7 +33,6 @@ Oil pressure: Typ 2.2, Min ?, Max 2.2
 [Performance]
 
 Maximum speed: 405 kt (750 km/h, 466 mph) @ 8700 m (28543 ft)
-# Never exceed speed:
 Cruise speed: 240 kt (444 km/h)  @ 3000m
 
 Rate of climb: 750 m/min (2,460 ft/min)
@@ -42,15 +40,10 @@ Power weight ratio: 320 W/kg (0.43 hp/kg, 0.20 hp/lb)
 Wing loading: 240 kg/sq m (49.155 lb/sq ft) 
 Normal range: 850 km (459 nm, 531 mi) 
 Service Ceiling: 12,000 m (39,370 ft)
-# Stalling speed:
-  74 kt (136 km/h 85 mph) ; power off, wheels and flaps up
-  67 kt (125 km/h 78 mph) ; power off, wheels and flaps down
-  56 kt (104 km/h 65 mph) ; power on,  wheels and flaps down
 ************************************************************************
 [Propeller: Sumitomo VDM constant speed 6-blade propeller]
 Diameter: 3.4 m
 Gear ratio: 0.412
-
 
 ***************************************
 [Weight]
@@ -62,14 +55,35 @@ Loaded: 10,864 lbs (4,928 kg)
 Length 9.66 m (32 ft 7 in)
 Height  3.92 (10 ft 1 in)
 Wing span 11.11 m  (36 ft 11 in)
-# Wing aspect ratio 6.42
 Wing area 220.6 sq ft (20.5 sq m)
 
 Main Wing:
 Chord and Dihedral:
-#Chord @ root: 2.81 m
-#Chord @ tip: 1.52 m
+Chord @ root: 2.39 m
+Chord @ tip: 1.25 m
 Dihedral: 3 degree
+Sweep angle: 20 degree
+Sweep Distance: 1.61 m (distance between the leading edges of the root and tip in X axis)
+Half span: 5.55 m
+%MAC Balance Point: 36
+  The follwoing values are calculated with the tool at 
+  http://www.nasascale.org/howtos/mac-calculator.htm using the parameters above.
+Sweep distance @ MAC: 0.72 m
+MAC Distance from root: 1.88 m
+Balance point @ Root chord(CG): 1.4 m
+
+[CG]
+this calculation is made with the equation obtained from: 
+http://www.paragonair.com/public/docs/FAA-Handbooks/8083-01_WnB/8083-01_ch08.pdf 
+Front Wheel pos: (1.47, 0, -2.25)
+Main wheel pos: (-2.15, -2.28, -2.15)
+Datum (Nose tip) pos : (4.89, 0, 0.37)
+Datum (D): 7.04m (277.16535 in) ahead of the main wheel
+Distance between Main wheel and front wheel (L): 3.71m (142.51969 in)
+Total Weight(W): 3,645 kg (8035 lb)
+Weight of the nose wheel (F) 8035 lb / some value between 6 and 8 = between 1004 and 1339 lb (guesstimate)
+CG offset from the nose: D - (F*L)/W = 6.44 to 6.59 m (253.41 to 259.35 in) behind the datum
+The point of the CG on the X-axis: between -1.547 to -1.698 (m).
 
 *********************************
 Fuel capacity:
@@ -79,10 +93,10 @@ Drop: 87 US gal
 -->
 
 <!-- Weight of everything but fuel - temporary lighter than actual weight -->
-<airplane mass="6035">
+<airplane mass="8035">
 
   <!-- Approach configuration -->
-  <approach speed="90" aoa="9">
+  <approach speed="85" aoa="15">
     <control-setting axis="/controls/engines/engine[0]/throttle" value="0.3"/>
     <control-setting axis="/controls/engines/engine[0]/mixture" value="0.55"/>
     <control-setting axis="/controls/engines/engine[0]/propeller-pitch" value="0.5"/>
@@ -92,8 +106,7 @@ Drop: 87 US gal
   </approach>
 
   <!-- Cruise configuration -->
-  <!-- actually alt=28000, but it makes engine very dull so 18000 is used instead -->
-  <cruise speed="405" alt="18000">
+  <cruise speed="405" alt="27560">
     <control-setting axis="/controls/engines/engine[0]/throttle" value="1.0"/>
     <control-setting axis="/controls/engines/engine[0]/mixture" value="1.0"/>
     <control-setting axis="/controls/engines/engine[0]/propeller-pitch" value="1.0"/>
@@ -105,17 +118,17 @@ Drop: 87 US gal
   <!-- pilot's eyepoint -->
   <cockpit x="-0.30" y="0" z="1.36"/>
 
-  <fuselage ax="4.88" ay="0.0" az="0.38" bx="-4.00" by="0.0" bz="0.74"
+  <fuselage ax="4.89" ay="0.0" az="0.37" bx="-4.00" by="0.0" bz="0.74"
 	    width="1.28" taper="0.3" midpoint="0.6"/>
 
   <!--
       Wing characteristics
-      sweep and twist are 'guesstimate'
+      twist is 'guesstimate'
       aoas for the main wing and the hstab should be revised...
     -->
-  <wing x="-2.86" y="2.48" z="0.11" taper="0.54" incidence="1.4"
-	length="5.02" chord="2.00" twist="-2.0" sweep="6.5" dihedral="3.0" 
-        camber="0.1" idrag="1.25">
+  <wing x="-2.86" y="2.48" z="0.11" taper="0.523" incidence="0.9"
+	length="5.02" chord="1.9" twist="-2.0" sweep="20" dihedral="3.0" 
+	camber="0.1" idrag="1.25">
     <stall aoa="15" width="9" peak="1.5"/>
     <flap0 start="0.0" end="0.4" lift="1.7" drag="1.9"/>
     <flap1 start="0.4" end="1.0" lift="1.4" drag="1.1"/>
@@ -133,11 +146,11 @@ Drop: 87 US gal
 
   <!-- start and end point are changed to avoid "insufficient elevator to trim for approach" -->
   <hstab x="3.52" y="0.44" z="0.44" taper="0.439" 
-	 length="1.61" chord="0.80" twist="-3.0" sweep="-0.5" incidence="0.3" effectiveness="3.5">
+	 length="1.61" chord="0.80" twist="-1.0" sweep="-0.5" incidence="0.3" effectiveness="1.87">
     <stall aoa="17" width="15" peak="1.5"/>
     <flap0 start="0.0" end="1.8" lift="1.75" drag="1.5"/>
     <control-input axis="/controls/flight/elevator" square="true" control="FLAP0" invert="true" 
-    src0="-1" src1="1" dst0="-0.6" dst1="0.6"/>
+		   src0="-1" src1="1" dst0="-0.8" dst1="0.8"/>
     <control-input axis="/controls/flight/elevator-trim" control="FLAP0" invert="true"/>
     <control-output control="FLAP0" prop="/surface-positions/elevator-pos-norm"/>
     <flap1 start="0.2" end="0.8" lift="1.5" drag="1.6"/>
@@ -166,38 +179,41 @@ Drop: 87 US gal
   </vstab>
 
   <!-- 
-    Propeller characteristics
-    curise rpm=max_rpm * gear_ratio, takeoff-rpm=max_rpm * gear_ratio * max_power / take-off_power (estimate)
-    The gear ratio is 0.412 but it doesn't make Shinden fly, so it is set to 0.5833
-    mass is lighter than the actuall one due to stability issue.
+       Propeller characteristics
+       curise rpm=max_rpm * gear_ratio, takeoff-rpm=max_rpm * gear_ratio * max_power / take-off_power (estimate)
+       The gear ratio is 0.412 but it doesn't make Shinden fly, so it is set to 0.5833
+       mass is lighter than the actuall one due to stability issue.
     -->
-  <propeller   x="-2.0" y="0" z="0.74"
-               radius="1.7"
-               mass="1750" moment="-110.0"
-               cruise-alt="18543" cruise-power="2330"
-               cruise-speed="405" cruise-rpm="1633"
-               takeoff-power="2000" takeoff-rpm="1609"
-               gear-ratio="0.5833"
-               min-rpm="583" max-rpm="1633"
-               fine-stop="0.8"
+  <propeller   x="-1.40" y="0" z="0.54"
+	       radius="1.7"
+	       mass="2126" moment="-110.0"
+	       cruise-alt="27560" cruise-power="2330"
+	       cruise-speed="405" cruise-rpm="1633"
+	       takeoff-power="2000" takeoff-rpm="1609"
+	       gear-ratio="0.5833"
+	       min-rpm="533" max-rpm="1633"
+	       fine-stop="0.85"
 	       >
     <actionpt x="-4.20" y="0" z="0.74"/>
     <control-input axis="/controls/engines/engine[0]/propeller-pitch" control="ADVANCE" />
-    <!-- turbo-mul and wastegate-mp are set to +600mmHg -->
+    <!-- turbo-mul (bar) and wastegate-mp (inHg) are set to 3.0 bar abd +600 mmHg -->
     <piston-engine
        eng-power="2330" eng-rpm="2800"
-       turbo-mul="1.79" wastegate-mp="53"
+       turbo-mul="3.0" wastegate-mp="53.152"
        >
       <control-input axis="/controls/engines/engine[0]/throttle" control="THROTTLE"/>
       <control-input axis="/controls/engines/engine[0]/starter" control="STARTER"/>
       <control-input axis="/controls/engines/engine[0]/magnetos" control="MAGNETOS"/>
       <control-input axis="/controls/engines/engine[0]/mixture" control="MIXTURE"/>
       <control-input axis="/controls/engines/engine[0]/boost" control="BOOST"/>
+<!--
+      <control-input axis="/controls/engines/engine[0]/wastegate" control="WASTEGATE"/>
+-->
     </piston-engine>
   </propeller>
 
   <!-- left main gear -->
-  <gear x="-1.64" y="2.28" z="-2.15" compression="0.6" spring="0.7" damp="3.7"
+  <gear x="-2.15" y="2.28" z="-2.15" compression="0.5" spring="0.7" damp="3.0"
 	dfric="0.6" sfric ="0.70">
     <control-input axis="/controls/gear/brake-left" control="BRAKE"/>
     <control-input axis="/controls/gear/brake-parking" control="BRAKE" split="true"/>
@@ -207,7 +223,7 @@ Drop: 87 US gal
   </gear>
 
   <!-- right main gear -->
-  <gear x="-1.64" y="-2.28" z="-2.15" compression="0.6" spring="0.7" damp="3.7"
+  <gear x="-2.15" y="-2.28" z="-2.15" compression="0.5" spring="0.7" damp="3.0"
 	dfric="0.6" sfric ="0.70">
     <control-input axis="/controls/gear/brake-right" control="BRAKE"/>
     <control-input axis="/controls/gear/brake-parking" control="BRAKE" split="true"/>
@@ -241,10 +257,12 @@ Drop: 87 US gal
   <!-- pilot -->
   <ballast x="-0.3" y="0" z="0.9" mass="170"/>
   <!-- other equipment; adjusting this makes drastic changes in flight stability -->
-  <ballast x="3.6" y="0.0" z="0.0" mass="1200"/>
+  <ballast x="3.0" y="0.0" z="0.0" mass="0"/>
   <!-- mass balance -->
   <ballast x="-3.53" y="2.56" z="1.10" mass="15"/>
   <ballast x="-3.53" y="-2.56" z="1.10" mass="15"/>
+<!--
   <ballast x="-3.53" y="2.56" z="-1.10" mass="15"/>
   <ballast x="-3.53" y="-2.56" z="-1.10" mass="15"/>
+-->
 </airplane>

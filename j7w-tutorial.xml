@@ -1,0 +1,192 @@
+<PropertyList>
+  <tutorial>
+    <name>Take-off</name>
+    <description>
+This tutorial starts from Fukuoka Airport (RJFF) where Shinden had its first test-flight.
+Take-off and climb out at 700 m/min, continuing on the runway heading. Level off at 1000m to complete the tutorial.
+    </description>
+    <timeofday>noon</timeofday>
+    <presets>
+      <airport-id>RJFF</airport-id>
+      <on-ground>1</on-ground>
+      <runway>34</runway>
+      <altitude-ft>-9999</altitude-ft>
+      <latitude-deg>33.57500162</latitude-deg>
+      <longitude-deg>130.4581262</longitude-deg>
+      <heading-deg>330.35</heading-deg>
+      <airspeed-kt>0</airspeed-kt>
+      <glideslope-deg>0</glideslope-deg>
+      <offset-azimuth>0</offset-azimuth>
+      <offset-distance>0</offset-distance>
+    </presets>
+    <init>
+      <set>
+        <prop>/controls/gear/brake-parking</prop>
+        <val>1</val>
+      </set>
+      <set>
+        <prop>/controls/flight/flaps</prop>
+        <val>0.0</val>
+      </set>
+      <set>
+        <prop>/controls/engines/engine/magnetos</prop>
+        <val>3</val>
+      </set>
+      <set>
+        <prop>/controls/engines/engine/throttle</prop>
+        <val>0.0</val>
+      </set>
+      <set>
+        <prop>/engines/engine/running</prop>
+        <val>true</val>
+      </set>
+      <set>
+        <prop>/environment/weather-scenario</prop>
+        <val>Fair weather</val>
+      </set>
+      <set>
+        <prop>/controls/flight/elevator-trim</prop>
+        <val>0.0</val>
+      </set>
+      <set>
+        <prop>/controls/flight/aileron-trim</prop>
+        <val>0.0</val>
+      </set>
+    </init>
+    <step>
+      <instruction>Release the parking brakes, smoothly apply full power and start your take-off.</instruction>
+      <error>
+        <check>
+          <prop>/controls/engines/engine/throttle</prop>
+          <lt>0.95</lt>
+          <msg>Apply full throttle for take-off.</msg>
+        </check>
+        <check>
+          <prop>/controls/gear/brake-parking</prop>
+          <eq>1</eq>
+          <msg>Release the parking brake using Shift B</msg>
+        </check>
+      </error>
+      <exit>
+        <check>
+          <prop>/velocities/airspeed-kt</prop>
+          <gt>5.0</gt>
+        </check>
+      </exit>
+    </step>
+    <step>
+      <instruction>Stay on the center-line of the runway using the rudder.</instruction>
+      <exit>
+        <check>
+          <prop>/velocities/airspeed-kt</prop>
+          <gt>80.0</gt>
+        </check>
+      </exit>
+    </step>
+    <step>
+      <instruction>Pull the yoke half way down at 100kts and take off at about 105kt.
+Putting the yoke to the left a bit to eliminate the moment produced by the propeller.</instruction>
+      <exit>
+        <check>
+          <prop>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</prop>
+          <gt>10</gt>
+        </check>
+      </exit>
+    </step>
+
+    <step>
+      <instruction>Rotate at 140 knots and climb straight out on heading 240 at 750 m/min.</instruction>
+      <error>
+	<check>
+	  <prop>/controls/gear/gear-down</prop>
+	  <eq>1</eq>
+	  <msg>Put the landing gear up</msg>
+	</check>
+      </error>
+      <exit>
+        <check>
+          <prop>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</prop>
+          <gt>2400</gt>
+        </check>
+	<check>
+	  <prop>/instrumentation/heading-indicator/indicated-heading-deg</prop>
+	  <gt>235</gt>
+	</check>
+	<check>
+	  <prop>/instrumentation/heading-indicator/indicated-heading-deg</prop>
+	  <lt>245</lt>
+	</check>
+      </exit>
+    </step>
+    <step>
+      <instruction>Continue your climb on heading 240 at 750 m/min to 1000 m.</instruction>
+      <error>
+        <check>
+          <prop>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</prop>
+          <lt>1640</lt> <!-- 500m/min -->
+          <msg>Your climb angle is too shallow - raise the nose slightly to increase your climb rate.</msg>
+        </check>
+        <check>
+          <prop>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</prop>
+          <gt>2952</gt> <!-- 900m/min -->
+          <msg>Your climb angle is too great - lower the nose slightly to decrease your climb rate.</msg>
+        </check>
+        <check>
+          <prop>/instrumentation/heading-indicator/indicated-heading-deg</prop>
+          <lt>235</lt>
+          <msg>You are heading too far left, Turn right slightly to heading 240.</msg>
+        </check>
+        <check>
+          <prop>/instrumentation/heading-indicator/indicated-heading-deg</prop>
+          <gt>245</gt>
+          <msg>You are heading too far right, Turn left slightly to heading 240.</msg>
+        </check>
+        <check>
+          <prop>/velocities/airspeed-kt</prop>
+          <lt>120.0</lt>
+          <msg>You are in danger of being "behind the power curve". Drop the nose to speed up to 120 knots.</msg>
+        </check>
+      </error>
+      <exit>
+       <check>
+         <prop>/instrumentation/altimeter/indicated-altitude-m</prop>
+         <gt>1000</gt>
+       </check>
+      </exit>
+    </step>
+    <step>
+      <instruction>Level off at between 1000 and 1050 m.</instruction>
+      <error>
+        <check>
+          <prop>/instrumentation/altimeter/indicated-altitude-m</prop>
+          <lt>1000</lt>
+          <msg>You are too low</msg>
+        </check>
+        <check>
+          <prop>/instrumentation/altimeter/indicated-altitude-m</prop>
+          <gt>1050</gt>
+          <msg>You are too high</msg>
+        </check>
+      </error>
+      <exit>
+       <check>
+         <prop>/instrumentation/altimeter/indicated-altitude-m</prop>
+         <gt>1000</gt>
+       </check>
+       <check>
+         <prop>/instrumentation/altimeter/indicated-altitude-m</prop>
+         <lt>1050</lt>
+       </check>
+        <check>
+          <prop>instrumentation/vertical-speed-indicator/indicated-speed-fpm</prop>
+          <lt>150</lt>
+        </check>
+        <check>
+          <prop>instrumentation/vertical-speed-indicator/indicated-speed-fpm</prop>
+          <gt>-150</gt>
+        </check>
+      </exit>
+    </step>
+    <endtext>Congratulations, you've successfully taken off. Now try landing!</endtext>
+  </tutorial>
+</PropertyList>

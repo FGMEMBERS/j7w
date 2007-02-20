@@ -4,18 +4,10 @@
   <path>pitch.ac</path>
 
   <animation>
-    <type>rotate</type>
+    <type>textranslate</type>
     <object-name>bar</object-name>
     <property>/orientation/pitch-deg</property>
-    <interpolation>
-    <entry><ind>-15</ind><dep>12</dep></entry>
-    <entry><ind>15</ind><dep>-12</dep></entry>
-    </interpolation>
-    <center>
-      <x-m>-0.18</x-m>
-      <y-m>0</y-m>
-      <z-m>0</z-m>
-    </center>
+    <factor>-0.00555</factor>
     <axis>
       <x>0</x>
       <y>1</y>

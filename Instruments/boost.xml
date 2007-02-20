@@ -8,9 +8,9 @@
   <object-name>Boost.needle</object-name>
   <property>engines/engine/boost-gauge-mmhg</property>
   <interpolation>
-     <entry><ind>-800</ind><dep>-180</dep></entry> <!-- -800mmHg  -->  
+     <entry><ind>-600</ind><dep>-144</dep></entry>
      <entry><ind>0</ind><dep>0</dep></entry>
-     <entry><ind>800</ind><dep>180</dep></entry> <!-- +800mmHg-->
+     <entry><ind>800</ind><dep>192</dep></entry>
   </interpolation>
   <center>
    <x-m>0</x-m>

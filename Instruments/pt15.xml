@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<PropertyList>
+<path>pt15.ac</path>
+
+  <animation>
+    <type>rotate</type>
+    <object-name>Fuel.needle</object-name>
+    <property>/engines/engine/fuel-pump-psi[0]</property>
+    <min>0</min>
+    <max>7.11167</max>
+    <interpolation>
+      <entry>
+	<ind>0</ind>
+	<dep>0</dep>
+      </entry>
+      <entry>
+	<ind>7.111673</ind>
+	<dep>-180</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>0</x-m>
+      <y-m>0.00255</y-m>
+      <z-m>-0.0142</z-m>
+<!--
+      <y-m>0.0019</y-m>
+      <z-m>-0.0106</z-m>
+-->
+    </center>
+    <axis>
+      <x>-1</x>
+      <y>0</y>
+      <z>0</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>rotate</type>
+    <object-name>OilPressure.needle</object-name>
+    <property>/engines/engine/oil-pressure-psi[0]</property>
+    <min>0</min>
+    <max>142.233</max>
+    <interpolation>
+      <entry>
+	<ind>0</ind>
+	<dep>0</dep>
+      </entry>
+      <entry>
+	<ind>142.233</ind>
+	<dep>180</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>0</x-m>
+      <y-m>-0.00255</y-m>
+      <z-m>-0.0142</z-m>
+    </center>
+    <axis>
+      <x>-1</x>
+      <y>0</y>
+      <z>0</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>rotate</type>
+    <object-name>OilTemp.needle</object-name>
+    <property>/engines/engine/oil-temperature-degf[0]</property>
+    <min>86</min>
+    <max>300</max> 
+    <interpolation>
+      <entry><ind>86</ind><dep>0</dep></entry>
+      <entry><ind>300</ind><dep>270</dep></entry>
+    </interpolation>
+    <axis>
+      <x>-1</x>
+      <y>0</y>
+      <z>0</z>
+    </axis>
+  </animation>
+
+</PropertyList>
+

@@ -1,50 +1,174 @@
 # J7W Shinden
 # This script is based on the one for A6M2
-var force = 1.0;
-var alt_m = 0.0;
-var fdm_ok = 0;
-toggle_canopy = func{
-}
 
-setlistener("/sim/signals/fdm-initialized", func {
-  setprop("/instrumentation/altimeter/indicated-altitude-m",0.0);
-  setprop("/engines/engine/cyl-temp",0.0);
-  fdm_ok=1;
-});
+#
+# Water Methanol Injection, maybe for some Japanese warbirds
+#
+WMInjection = {
+  # 
+  # new(rate)
+  # rate: boost multiplier (0.0 = raw-boost to 1.0 to 2 * ras-boost)
+  # 
+  new : func(rate) {
+    obj = { parents : [WMInjection],
+            capacity : 12.0,
+            boost_rate : rate,
+            active : 0,
+            property : "/controls/engines/engine/water-methanol-injection", 
+            gauge1 : "/instrumentation/water-methanol-injection/pump-pressure",
+            gauge2 : "/instrumentation/water-methanol-injection/injection-pressure",
+            min_pump_pressure : 0.3,
+            max_pump_pressure : 1.6,
+            min_injection_pressure : 0.8,
+            max_injection_pressure : 15,
+            pump_pressure : 0.0,
+            injection_pressure : 0.0
+          };
+    setlistener("/sim/signals/fdm-initialized", func { obj.consume(); });
+    setlistener("/sim/signals/reinit", func { obj.reset(); });
+    obj.reset();
+    return obj;
+  },
 
-updates = func{
-  setprop("/instrumentation/altimeter/indicated-altitude-m", getprop("/instrumentation/altimeter/indicated-altitude-ft") * 0.3048);
-  if(getprop("/engines/engine/running") != 0) {
-    interpolate("/engines/engine/cyl-temp", 0.5 + (getprop("/controls/engines/engine/throttle")* 0.5), 150);
-  } else {
-    interpolate("/engines/engine/cyl-temp", 0.0, 500);
-  }
-  if (getprop("/engines/engine/boost-gauge-inhg") != nil) {
-    setprop("/engines/engine/boost-gauge-mmhg", getprop("/engines/engine/boost-gauge-inhg") * 25.4);
-  } else {
-    if (getprop("/engines/engine/mp-osi") != nil) {
-      interpolate("/engines/engine/boost-gauge-mmhg", getprop("/engines/engine/mp-osi") * 25.4 - 750.006168, 0.2);
+  boost : func { return getprop(me.property) * me.boost_rate * me.injected(); },
+  
+  activated : func { return me.active; },
+
+  injected : func {
+    if (me.active == 1 and me.capacity > 0) {
+      return 1;
+    } else {
+      return 0;
+    }
+  },
+
+  reset : func {
+    me.pump_pressure = 0.0;
+    me.injection_pressure = 0.0;
+    me.capacity = 12.0;
+    setprop(me.property, 0.0);
+    setprop(me.gauge1, 0.0);
+    setprop(me.gauge2, 0.0);
+  },
+
+  consume : func {
+    level = getprop(me.property);
+    # injection lasts 20 mins in full-injection
+    if (me.capacity > 0) {
+      me.capacity -= level * 0.01;
+    } else { 
+      me.capacity = 0.0;
+      # just to send an event to control the boost
+      setprop(me.property, getprop(me.property));
+    };
+    interpolate("/consumables/water-methanol-injection/level-gal_us", me.capacity, 1.0);
+    interpolate(me.gauge1, me.pump_pressure * me.active, 1.0);
+    interpolate(me.gauge2, me.injection_pressure * me.injected(), 1.0);
+    settimer(func { me.consume(); }, 1);
+  },
+    
+  update : func {
+    level = getprop(me.property);
+    if (level > 0 and getprop("/engines/engine/running") == 1) {
+      me.active = 1;
+      me.pump_pressure = me.min_pump_pressure + level * (me.max_pump_pressure - me.min_pump_pressure);
+      if (me.capacity > 0.0) {
+        me.injection_pressure = me.min_injection_pressure + level * (me.max_injection_pressure - me.min_injection_pressure);
+      }
+    }
+    else {
+      me.active = 0;
     }
   }
-  force = getprop("/accelerations/pilot-g");
-  if(force == nil) {force = 1.0;}
-  eyepoint = getprop("sim/view/config/y-offset-m") +0.01;
-  eyepoint -= (force * 0.01);
-  if(getprop("/sim/current-view/view-number") < 1){
-    setprop("/sim/current-view/y-offset-m",eyepoint);
+};
+
+# Hydraulic Torque Converter (HTC) driven Turbine with water-methanol injection (WMI)
+# 
+# Instance variables
+#   wmi : water-methanol injection object
+Turbine = {
+  new : func {
+    obj = { parents : [Turbine],
+          wmi : WMInjection.new(0.5)
+        };
+    setprop("/controls/engines/engine/wastegate", 0.5);
+    setprop("/controls/engines/engine/boost", getprop("/controls/engines/engine/raw-boost") * 0.7);
+    setlistener("/controls/engines/engine/raw-boost", func { obj.setBoost(); });
+    setlistener("/controls/engines/engine/water-methanol-injection", func { obj.setBoost(); });
+    setlistener("/engines/engine/running", func { obj.setBoost(); });
+    return obj;
+  },
+
+  setBoost : func {
+    running = getprop("/engines/engine/running");
+    boost = getprop("/controls/engines/engine/raw-boost") * running;
+    setprop("/controls/engines/engine/boost", boost * 0.7 * (1 + me.wmi.boost()));
+    interpolate("/instrumentation/htc/pressure-norm", getprop("/controls/engines/engine/raw-boost") * running, 1);
+  },
+    
+  update : func {
+    me.wmi.update();
+    boost = getprop("/controls/engines/engine/boost");
+    throttle = getprop("/controls/engines/engine/throttle");
+    running = getprop("/engines/engine/running");
+    if (running != nil and running == 1) {
+      # WASTEGATE control in YASim doesn't seem working when it's updated almost all the time in this method
+      # maybe I should change the 
+      setprop("/controls/engines/engine/wastegate", (1.0 + throttle) / 2);
+    }
   }
-  registerTimer();    
+};
+
+#
+# Shinden adjusts the elevator trim when flaps goes down 
+# for reducing the nose-down to some extent.
+# Its nose still goes down a little bit, unfortunately.
+#
+FlapDrivenElevatorTrim = {
+  new : func {
+    obj = { parents : [FlapDrivenElevatorTrim], 
+            angle_norm : 0.0,
+            prev_flap_pos : 0.0,
+            delay : 4,
+	    is_trimming : 0,
+            property : "/controls/flight/elevator-trim" };
+    setlistener("/controls/flight/flaps", func { obj.adjustTrim(); });
+    setlistener("/sim/signals/reinit", func { obj.reset(); });
+    setprop(obj.property, 0);
+    return obj;
+  },
+
+  reset : func {
+    me.prev_flap_pos = 0.0;
+    me.is_trimming = 0;
+    setprop(me.property, 0);
+    setprop("/controls/flight/flaps", 0);
+  },
+
+  adjustTrim : func {
+    if (me.is_trimming == 0) {
+      me.is_trimming = 1;
+      trim = getprop(me.property);
+      flap_pos = getprop("/controls/flight/flaps");
+      delta_pos = me.prev_flap_pos - flap_pos;
+      me.prev_flap_pos = flap_pos;
+      interpolate(me.property, trim + delta_pos / 4, me.delay);
+      settimer(func { me.is_trimming = 0; }, me.delay);
+    } else {
+      # applying flap-down while trim is being adjusted, 
+      # this function doesn't trim correctly. To avoid this issue,
+      # it delays the trim for me.dealy seconds.
+      settimer(func {me.adjustTrim(); }, me.delay);
+    }
+  }
+};
+
+var j7w = JapaneseWarbird.new();
+var observers = [Altimeter.new(), BoostGauge.new(), CylinderTemperature.new(), 
+                 GForce.new(), Turbine.new(), ExhaustGasTemperature.new(41.6) ];
+foreach (observer; observers) {
+    j7w.addObserver(observer);
 }
 
-
-registerTimer = func {
-    settimer(updates, 0);
-}
-
-setlistener("/controls/canopy/opened", func {
-    var position = cmdarg().getValue();
-    interpolate("/controls/canopy/position-norm", position, 2);
-  },1);
-
-registerTimer();
+var elevator_trim = FlapDrivenElevatorTrim.new();
 
