@@ -130,7 +130,7 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
       </text>
     </help>
 
-    <tutorial include="j7w-tutorial.xml"></tutorial>
+    <tutorials include="j7w-tutorial.xml"/>
   </sim>
 
   <engines>
