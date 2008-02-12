@@ -33,16 +33,16 @@
 # Canopy class - this is not an observer 
 #
 Canopy = {
-  new : func {
-    obj = { parents : [Canopy],
-          canopy : aircraft.door.new("/controls/canopy", 2) };
-    setlistener("/controls/canopy/opened", func { obj.toggleOpenClose(cmdarg().getBoolValue()); }, 1);
-    return obj;
-  },
+    new : func {
+        var obj = { parents : [Canopy],
+        canopy : aircraft.door.new("/controls/canopy", 2) };
+        setlistener("/controls/canopy/opened", func { obj.toggleOpenClose(cmdarg().getBoolValue()); }, 1);
+        return obj;
+    },
 
-  toggleOpenClose : func(state) {
-    me.canopy.move(state);
-  }
+    toggleOpenClose : func(state) {
+      me.canopy.move(state);
+    }
 };
 
 #
@@ -50,70 +50,70 @@ Canopy = {
 # This class updates the viewpoint of the pilot regarding the G-force.
 #
 GForce = {
-  new : func {
-    obj = { parents : [GForce] };
+    new : func {
+    var obj = { parents : [GForce] };
     return obj;
-  },
+    },
 
-  update : func {
-    force = getprop("/accelerations/pilot-g");
-    if (force == nil) { force = 1.0; }
-    eyepoint = getprop("sim/view/config/y-offset-m") + 0.01;
-    eyepoint -= (force * 0.01);
-    if (getprop("/sim/current-view/view-number") < 1) {
-      setprop("/sim/current-view/y-offset-m", eyepoint);
+    update : func {
+        force = getprop("/accelerations/pilot-g");
+        if (force == nil) { force = 1.0; }
+        eyepoint = getprop("sim/view/config/y-offset-m") + 0.01;
+        eyepoint -= (force * 0.01);
+        if (getprop("/sim/current-view/view-number") < 1) {
+            setprop("/sim/current-view/y-offset-m", eyepoint);
+        }
     }
-  }
 };
 
 #
 # Altimeter observer - unit converter (ft to m) for altimeter.
 #
 Altimeter = {
-  new : func {
-    obj = { parents : [Altimeter] };
-    return obj;
-  },
+    new : func {
+        var obj = { parents : [Altimeter] };
+        return obj;
+    },
 
-  update: func {
-    setprop("/instrumentation/altimeter/indicated-altitude-m", getprop("/instrumentation/altimeter/indicated-altitude-ft") * 0.3048);
-  }
+    update: func {
+        setprop("/instrumentation/altimeter/indicated-altitude-m", getprop("/instrumentation/altimeter/indicated-altitude-ft") * 0.3048);
+    }
 };
 
 #
-# Cylinder temperature observer (CHT) - simulates the cylinder temperature
+# Cylinder temperature observer - simulates the cylinder temperature
 #
 CylinderTemperature = {
-  new: func {
-    obj = { parents : [CylinderTemperature] };
-    setprop("/engines/engine/cyl-temp", 0.0);
-    return obj;
-  },
+    new: func {
+        var obj = { parents : [CylinderTemperature] };
+        setprop("/engines/engine/cyl-temp", 0.0);
+        return obj;
+    },
 
-  update: func {
-    if (getprop("/engines/engine/running") != 0) {
-      interpolate("/engines/engine/cyl-temp", 0.5 + (getprop("/controls/engines/engine/throttle") * 0.5), 150);
-    } else {
-      interpolate("/engines/engine/cyl-temp", 0.0, 500);
+    update: func {
+        if (getprop("/engines/engine/running") != 0) {
+            interpolate("/engines/engine/cyl-temp", 0.5 + (getprop("/controls/engines/engine/throttle") * 0.5), 150);
+        } else {
+        interpolate("/engines/engine/cyl-temp", 0.0, 500);
+        }
     }
-  }
 };
 
 #
 # BoostGause observer - unit converter from inHg to mmHg
 #
 BoostGauge = {
-  new: func {
-    obj = { parents: [BoostGauge] };
-    return obj;
-  },
+    new: func {
+        var obj = { parents: [BoostGauge] };
+        return obj;
+    },
 
-  update: func {
+    update: func {
     # for both JSBSim and YASim version, this nil check is required since mp-osi is not set when fdm-initialized is set
-    if ((mp_osi = getprop("/engines/engine/mp-osi")) != nil) {
-      interpolate("/engines/engine/boost-gauge-mmhg", mp_osi * 25.4 - 750.006168, 0.2);
+    if ((var mp_osi = getprop("/engines/engine/mp-osi")) != nil) {
+        interpolate("/engines/engine/boost-gauge-mmhg", mp_osi * 25.4 - 750.006168, 0.2);
+        }
     }
-  }
 };
 
 #
@@ -122,112 +122,111 @@ BoostGauge = {
 # If you use JSBSim, then you might not need this unless engine parameters are wrong.
 #
 # displacement: displacement of the engine in SI (1 litre = 0.001 SI)
+
 ExhaustGasTemperature = {
-  #
-  # new(displacement);
-  # displacement : displacement of the engine (Liter)
-  # 
-  new : func(displacement) {
-    obj = { parents : [ExhaustGasTemperature], 
-            p_amb_sea_level : getprop("/environment/pressure-sea-level-inhg") * 3386.3886,
-            displacement : displacement * 0.001 };
-          
-    setprop("/instrumentation/egt/egt-degc", getprop("/environment/temperature-degc"));
-    return obj;
-  },
+#
+# new(displacement);
+# displacement : displacement of the engine (Liter)
+#
+    new : func(displacement) {
+        var obj = { parents : [ExhaustGasTemperature], 
+        p_amb_sea_level : getprop("/environment/pressure-sea-level-inhg") * 3386.3886,
+        displacement : displacement * 0.001 };
+        setprop("/instrumentation/egt/egt-degc", getprop("/environment/temperature-degc"));
+        return obj;
+    },
 
   # approx. calculation of combustion efficiency
-  get_combustion_efficiency : func {
-    mixture = getprop("/controls/engines/engine/mixture");
-    thi_sea_level = 1.3 * mixture;
-    p_amb = getprop("/environment/pressure-inhg") * 3386.3886;   # ambient pressure (Pa)
-    equivalence_ratio = thi_sea_level * me.p_amb_sea_level / p_amb;
+    get_combustion_efficiency : func {
+        var combustion_efficiency = 0.0;
+        var mixture = getprop("/controls/engines/engine/mixture");
+        var thi_sea_level = 1.3 * mixture;
+        var p_amb = getprop("/environment/pressure-inhg") * 3386.3886;   # ambient pressure (Pa)
+        var equivalence_ratio = thi_sea_level * me.p_amb_sea_level / p_amb;
 
-    if (equivalence_ratio < 0.9) {
-      combustion_efficiency = 0.98
-    } else {
-      combustion_efficiency = 0.98 - (0.577 * (equivalence_ratio - 0.9));
-      if (combustion_efficiency < 0.1) {
-        combustion_efficiency = 0.1;
-      }
-    } 
-    return combustion_efficiency;
-  },
+        if (equivalence_ratio < 0.9) {
+            combustion_efficiency = 0.98
+        } else {
+        combustion_efficiency = 0.98 - (0.577 * (equivalence_ratio - 0.9));
+        if (combustion_efficiency < 0.1) {
+            combustion_efficiency = 0.1;
+            }
+        }
+        return combustion_efficiency;
+    },
 
-  get_air_flow : func(t_amb) {
-    r_air = 287.3;
-    volumetric_efficiency = 0.8;
-    map = getprop("/engines/engine/mp-osi") * 6894.7573;       # manifold pressure (Pa)
-    rpm = getprop("/engines/engine/rpm");
+    get_air_flow : func(t_amb) {
+    var r_air = 287.3;
+    var volumetric_efficiency = 0.8;
+    var map = getprop("/engines/engine/mp-osi") * 6894.7573;       # manifold pressure (Pa)
+    var rpm = getprop("/engines/engine/rpm");
 
-    v_dot_air = (me.displacement * rpm / 60) / 2 * volumetric_efficiency;   
+    var v_dot_air = (me.displacement * rpm / 60) / 2 * volumetric_efficiency;   
     return v_dot_air * map / (r_air * t_amb);
-  },
+    },
 
-  update : func {
+    update : func {
     #
     # This function is almost the same as doEGT() in JSBSim
     # except this uses some approx. calculations
-    cp_air=1005;
-    cp_fuel=1700;
-    calorific_value_fuel = 47300000;
+        var cp_air=1005;
+        var cp_fuel=1700;
+        var calorific_value_fuel = 47300000;
 
-    t_amb = getprop("/environment/temperature-degc") + 273.15;   # ambient temp. (K)
+        var t_amb = getprop("/environment/temperature-degc") + 273.15;   # ambient temp. (K)
 
-    if (getprop("/engines/engine/running") == 1) {
-      combustion_efficiency = me.get_combustion_efficiency();
-      m_dot_air = me.get_air_flow(t_amb);
-      m_dot_fuel = m_dot_air / 14.7;
-  
-      enthalpy_exhaust = m_dot_fuel * calorific_value_fuel * combustion_efficiency * 0.33;
-      heat_capacity_exhaust = (cp_air * m_dot_air) + (cp_fuel * m_dot_fuel);
-      delta_T_exhaust = enthalpy_exhaust / heat_capacity_exhaust;
-      egt = t_amb + delta_T_exhaust - 273.15;
-      setprop("/instrumentation/egt/egt-degc", egt);
-   } else {
-     # goes back to the ambient temperature in 1 min
-     interpolate("/instrumentation/egt/egt-degc", t_amb - 273.15, 60);
-   }
-  }
+        if (getprop("/engines/engine/running") == 1) {
+            var combustion_efficiency = me.get_combustion_efficiency();
+            var m_dot_air = me.get_air_flow(t_amb);
+            var m_dot_fuel = m_dot_air / 14.7;
+            var enthalpy_exhaust = m_dot_fuel * calorific_value_fuel * combustion_efficiency * 0.33;
+            var heat_capacity_exhaust = (cp_air * m_dot_air) + (cp_fuel * m_dot_fuel);
+            var delta_T_exhaust = enthalpy_exhaust / heat_capacity_exhaust;
+            var egt = t_amb + delta_T_exhaust - 273.15;
+            setprop("/instrumentation/egt/egt-degc", egt);
+        } else {
+        # goes back to the ambient temperature in 1 min
+        interpolate("/instrumentation/egt/egt-degc", t_amb - 273.15, 60);
+        }
+    }
 };
-
 
 #
 # Japanese Warbird class - adds and updates observers
 #
 JapaneseWarbird = {
-  new : func {
-    obj = { parents : [JapaneseWarbird],
-	    observers : [],
-            canopy : Canopy.new() };
+    new : func {
+        var obj = { parents : [JapaneseWarbird],
+        observers : [],
+        canopy : Canopy.new() };
     setlistener("/sim/signals/fdm-initialized", func { obj.registerTimer(); });
     return obj;
-  },
+    },
 
-  # 
+  #
   # addObserver(observer)
   # add an observer object to the JapaneseWarbird object
   # each observer must have a method named "update"
   # 
-  addObserver : func(observer) {
-    append(me.observers, observer);
-  },
-  
+    addObserver : func(observer) {
+        append(me.observers, observer);
+    },
+
   # 
   # update()
   # update each observer in turn
   # 
-  update : func {
-    foreach (observer; me.observers) {
-      observer.update();
-    }
+    update : func {
+        foreach (observer; me.observers) {
+        observer.update();
+        }
     me.registerTimer();
-  },
+    },
   
   #
   # timer driven function
   #
-  registerTimer : func {
-    settimer(func { me.update() }, 0);
-  }
+    registerTimer : func {
+        settimer(func { me.update() }, 0);
+    }
 }

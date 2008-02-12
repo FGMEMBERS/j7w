@@ -10,7 +10,7 @@ WMInjection = {
   # rate: boost multiplier (0.0 = raw-boost to 1.0 to 2 * ras-boost)
   # 
   new : func(rate) {
-    obj = { parents : [WMInjection],
+    var obj = { parents : [WMInjection],
             capacity : 12.0,
             boost_rate : rate,
             active : 0,
@@ -68,7 +68,7 @@ WMInjection = {
   },
     
   update : func {
-    level = getprop(me.property);
+    var level = getprop(me.property);
     if (level > 0 and getprop("/engines/engine/running") == 1) {
       me.active = 1;
       me.pump_pressure = me.min_pump_pressure + level * (me.max_pump_pressure - me.min_pump_pressure);
@@ -88,7 +88,7 @@ WMInjection = {
 #   wmi : water-methanol injection object
 Turbine = {
   new : func {
-    obj = { parents : [Turbine],
+    var obj = { parents : [Turbine],
           wmi : WMInjection.new(0.5)
         };
     setprop("/controls/engines/engine/wastegate", 0.5);
@@ -100,17 +100,17 @@ Turbine = {
   },
 
   setBoost : func {
-    running = getprop("/engines/engine/running");
-    boost = getprop("/controls/engines/engine/raw-boost") * running;
+    var running = getprop("/engines/engine/running");
+    var boost = getprop("/controls/engines/engine/raw-boost") * running;
     setprop("/controls/engines/engine/boost", boost * 0.7 * (1 + me.wmi.boost()));
     interpolate("/instrumentation/htc/pressure-norm", getprop("/controls/engines/engine/raw-boost") * running, 1);
   },
     
   update : func {
     me.wmi.update();
-    boost = getprop("/controls/engines/engine/boost");
-    throttle = getprop("/controls/engines/engine/throttle");
-    running = getprop("/engines/engine/running");
+    var boost = getprop("/controls/engines/engine/boost");
+    var throttle = getprop("/controls/engines/engine/throttle");
+    var running = getprop("/engines/engine/running");
     if (running != nil and running == 1) {
       # WASTEGATE control in YASim doesn't seem working when it's updated almost all the time in this method
       # maybe I should change the 
@@ -126,7 +126,7 @@ Turbine = {
 #
 FlapDrivenElevatorTrim = {
   new : func {
-    obj = { parents : [FlapDrivenElevatorTrim], 
+    var obj = { parents : [FlapDrivenElevatorTrim], 
             angle_norm : 0.0,
             prev_flap_pos : 0.0,
             delay : 4,
@@ -148,9 +148,9 @@ FlapDrivenElevatorTrim = {
   adjustTrim : func {
     if (me.is_trimming == 0) {
       me.is_trimming = 1;
-      trim = getprop(me.property);
-      flap_pos = getprop("/controls/flight/flaps");
-      delta_pos = me.prev_flap_pos - flap_pos;
+      var trim = getprop(me.property);
+      var flap_pos = getprop("/controls/flight/flaps");
+      var delta_pos = me.prev_flap_pos - flap_pos;
       me.prev_flap_pos = flap_pos;
       interpolate(me.property, trim + delta_pos / 4, me.delay);
       settimer(func { me.is_trimming = 0; }, me.delay);
@@ -165,7 +165,7 @@ FlapDrivenElevatorTrim = {
 
 var j7w = JapaneseWarbird.new();
 var observers = [Altimeter.new(), BoostGauge.new(), CylinderTemperature.new(), 
-                 GForce.new(), Turbine.new(), ExhaustGasTemperature.new(41.6) ];
+                 Turbine.new(), ExhaustGasTemperature.new(41.6) ];
 foreach (observer; observers) {
     j7w.addObserver(observer);
 }

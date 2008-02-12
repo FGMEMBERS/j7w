@@ -1,20 +1,20 @@
 #A6M2 electrical system.
 
-battery = nil;
-alternator = nil;
+var battery = nil;
+var alternator = nil;
 
-last_time = 0.0;
-pwr_src = 0.0;
+var last_time = 0.0;
+var pwr_src = 0.0;
 
-bat_bus_volts = 0.0;
-emerg_bus_volts = 0.0;
-main_bus_volts = 0.0;
-ammeter_ave = 0.0;
+var bat_bus_volts = 0.0;
+var emerg_bus_volts = 0.0;
+var main_bus_volts = 0.0;
+var ammeter_ave = 0.0;
 
 BatteryClass = {};
 
 BatteryClass.new = func {
-    obj = { parents : [BatteryClass],
+    var obj = { parents : [BatteryClass],
             ideal_volts : 12.0,
             ideal_amps : 20.0,
             amp_hours : 12.75,
@@ -26,7 +26,7 @@ BatteryClass.new = func {
 AlternatorClass = {};
 
 AlternatorClass.new = func {
-    obj = { parents : [AlternatorClass],
+    var obj = { parents : [AlternatorClass],
             rpm_source : "/engines/engine[0]/rpm",
             rpm_threshold : 500.0,
             ideal_volts : 14.0,
@@ -47,8 +47,8 @@ setlistener("/sim/signals/fdm-initialized", func {
 });
 
 BatteryClass.apply_load = func( amps, dt ) {
-    amphrs_used = amps * dt / 3600.0;
-    percent_used = amphrs_used / me.amp_hours;
+    var amphrs_used = amps * dt / 3600.0;
+    var percent_used = amphrs_used / me.amp_hours;
     me.charge_percent -= percent_used;
     if ( me.charge_percent < 0.0 ) {
         me.charge_percent = 0.0;
@@ -60,35 +60,35 @@ BatteryClass.apply_load = func( amps, dt ) {
 
 
 BatteryClass.get_output_volts = func {
-    x = 1.0 - me.charge_percent;
-    tmp = -(3.0 * x - 1.0);
-    factor = (tmp*tmp*tmp*tmp*tmp + 32) / 32;
+    var x = 1.0 - me.charge_percent;
+    var tmp = -(3.0 * x - 1.0);
+    var factor = (tmp*tmp*tmp*tmp*tmp + 32) / 32;
     return me.ideal_volts * factor;
 }
 
 BatteryClass.get_output_amps = func {
-    x = 1.0 - me.charge_percent;
-    tmp = -(3.0 * x - 1.0);
-    factor = (tmp*tmp*tmp*tmp*tmp + 32) / 32;
+    var x = 1.0 - me.charge_percent;
+    var tmp = -(3.0 * x - 1.0);
+    var factor = (tmp*tmp*tmp*tmp*tmp + 32) / 32;
     return me.ideal_amps * factor;
 }
 
 
 
 AlternatorClass.apply_load = func( amps, dt, src ) {
-    rpm = getprop(src);
-    factor = rpm / me.rpm_threshold;
+    var rpm = getprop(src);
+    var factor = rpm / me.rpm_threshold;
     if ( factor > 1.0 ) {
         factor = 1.0;
     }
-    available_amps = me.ideal_amps * factor;
+    var available_amps = me.ideal_amps * factor;
     return available_amps - amps;
 }
 
 
 AlternatorClass.get_output_volts = func( src ) {
-    rpm = getprop(src );
-    factor = rpm / me.rpm_threshold;
+    var rpm = getprop(src );
+    var factor = rpm / me.rpm_threshold;
     if ( factor > 1.0 ) {
         factor = 1.0;
     }
@@ -97,34 +97,34 @@ AlternatorClass.get_output_volts = func( src ) {
 
 
 AlternatorClass.get_output_amps = func(src ){
-    rpm = getprop( src );
-    factor = rpm / me.rpm_threshold;
+    var rpm = getprop( src );
+    var factor = rpm / me.rpm_threshold;
     if ( factor > 1.0 ) {
         factor = 1.0;
     }
     return me.ideal_amps * factor;
 }
 
-update_electrical = func {
-    time = getprop("/sim/time/elapsed-sec");
-    dt = time - last_time;
-    last_time = time;
+var update_electrical = func {
+    var time = getprop("/sim/time/elapsed-sec");
+    var dt = time - last_time;
+    var last_time = time;
     update_virtual_bus( dt );
     settimer(update_electrical, 0);
 }
 
-update_virtual_bus = func( dt ) {
-    battery_volts = battery.get_output_volts();
-    alternator_volts = alternator.get_output_volts("/engines/engine[0]/rpm");
-    external_volts = 0.0;
-    load = 0.0;
+var update_virtual_bus = func( dt ) {
+    var battery_volts = battery.get_output_volts();
+    var alternator_volts = alternator.get_output_volts("/engines/engine[0]/rpm");
+    var external_volts = 0.0;
+    var load = 0.0;
 
-    master_bat = getprop("/controls/electric/battery-switch");
-    master_alt = getprop("/controls/electric/engine[0]/generator");
+    var master_bat = getprop("/controls/electric/battery-switch");
+    var master_alt = getprop("/controls/electric/engine[0]/generator");
 
     bat_bus_volts = 0.0;
     main_bus_volts = 0.0;
-    power_source = nil;
+    var power_source = nil;
 
     if ( master_bat == 1.0 ) {
         bat_bus_volts = battery_volts;
@@ -148,8 +148,8 @@ update_virtual_bus = func( dt ) {
         power_source = "external";
     }
 
-    starter_switch = getprop("/controls/engines/engine[0]/starter");
-    starter_volts = 0.0;
+    var starter_switch = getprop("/controls/engines/engine[0]/starter");
+    var starter_volts = 0.0;
     if ( starter_switch ) {
         starter_volts = bat_bus_volts;
     }
@@ -159,7 +159,7 @@ update_virtual_bus = func( dt ) {
     load += emergency_bus();
     load += Main_bus();
 
-    ammeter = 0.0;
+    var ammeter = 0.0;
     if ( bat_bus_volts > 1.0 ) {
         # normal load
         load += 15.0;
@@ -189,8 +189,8 @@ update_virtual_bus = func( dt ) {
     return load;
 }
 
-emergency_bus = func() {
-    load = 0.0;
+var emergency_bus = func() {
+    var load = 0.0;
     setprop("/systems/electrical/outputs/nav[1]", emerg_bus_volts);
     setprop("/systems/electrical/outputs/com[0]", emerg_bus_volts);
 
@@ -208,8 +208,8 @@ emergency_bus = func() {
 }
 
 
-Main_bus = func() {
-load = 0.0;
+var Main_bus = func() {
+var load = 0.0;
 setprop("/controls/hydraulic/system/engine-pump","false");
 if(main_bus_volts > 0.2){
 setprop("/controls/hydraulic/system/engine-pump","true");
