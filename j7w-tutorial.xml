@@ -17,8 +17,8 @@ Take-off and climb out at 700 m/min, continuing on the runway heading. Level off
       <heading-deg>330.35</heading-deg>
       <airspeed-kt>0</airspeed-kt>
       <glideslope-deg>0</glideslope-deg>
-      <offset-azimuth>0</offset-azimuth>
-      <offset-distance>0</offset-distance>
+      <offset-azimuth-deg>0</offset-azimuth-deg>
+      <offset-distance-nm>0</offset-distance-nm>
     </presets>
 
     <init>
