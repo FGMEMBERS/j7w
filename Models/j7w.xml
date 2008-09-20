@@ -185,6 +185,34 @@
  </model>
 -->
 
+<!-- objects only for j7w1 -->
+<animation>
+  <type>select</type>
+  <object-name>fuselageEnd</object-name>
+  <object-name>Propeller</object-name>
+  <object-name>spinner</object-name>
+  <condition>
+   <equals>
+    <property>sim/aircraft</property>
+    <value>j7w</value>
+   </equals>
+  </condition>
+</animation>
+
+<animation>
+  <type>select</type>
+  <object-name>outerBlades</object-name>
+  <object-name>turbineBlades</object-name>
+  <object-name>turbineSpinner</object-name>
+  <object-name>innerTurbineHouse</object-name>
+  <object-name>turbineHouse</object-name>
+  <condition>
+   <equals>
+    <property>sim/aircraft</property>
+    <value>j7w2</value>
+   </equals>
+  </condition>
+</animation>
 <animation>
   <type>select</type>
   <object-name>pilot</object-name>
@@ -263,6 +291,23 @@
    <z>0.0</z>
   </axis>
 </animation>
+
+ <animation>
+   <type>spin</type>
+   <object-name>turbineBlades</object-name>
+   <property>engines/engine[0]/n1</property>
+   <factor> 10 </factor>
+   <center>
+     <x-m> -3.734 </x-m>
+     <y-m> 0.000 </y-m>
+     <z-m> 0.70 </z-m>
+   </center>
+   <axis>
+     <x> 1.000 </x>
+     <y> 0.000 </y>
+     <z> 0.000 </z>
+   </axis>
+ </animation>
 
 <animation>
   <type>select</type>

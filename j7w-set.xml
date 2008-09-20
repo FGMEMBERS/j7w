@@ -5,219 +5,21 @@ Jan. 10 Tat Nishioka
 ************************************************************************
 -->
 
-<PropertyList>
+<PropertyList include="j7w-base.xml">
   <sim>
     <description>J7W Shinden</description>
     <author>Tat Nishioka</author>
     <status>development</status>
-    <startup>
-      <splash-texture>Aircraft/j7w/splash.rgb</splash-texture>
-    </startup>
-    
-    <flight-model>yasim</flight-model>
-    <aero>j7w</aero>
-    <fuel-fraction>0.70</fuel-fraction>
 
-    <virtual-cockpit archive="y">true</virtual-cockpit>
-    <allow-toggle-cockpit archive="y">true</allow-toggle-cockpit>
+    <aero>j7w</aero>
 
     <sound>
       <path>Aircraft/j7w/j7w-sound.xml</path>
     </sound>
-
-    <model>
-      <path>Aircraft/j7w/Models/j7w.xml</path>
-    </model> 
-
-    <view n="0">
-      <internal archive="y">true</internal>
-      <config>
-	<x-offset-m archive="y" type="double">0.0</x-offset-m>
-	<y-offset-m archive="y" type="double">1.37</y-offset-m>
-	<z-offset-m archive="y" type="double">-0.22</z-offset-m>
-	<pitch-offset-deg>-13.0</pitch-offset-deg>
-      </config>
-    </view>
-
-<!--
-    <autopilot>
-      <config>
-	<min-climb-speed-kt type="float">90</min-climb-speed-kt>
-	<best-climb-speed-kt type="float">120</best-climb-speed-kt>
-	<target-climb-rate-fpm type="float">2460</target-climb-rate-fpm>
-	<target-descent-rate-fpm type="float">3500</target-descent-rate-fpm>
-	<elevator-adj-factor type="float">12000</elevator-adj-factor>
-	<integral-contribution type="float">0.02</integral-contribution>
-	<zero-pitch-throttle type="float">0.50</zero-pitch-throttle>
-	<zero-pitch-trim-full-throttle type="float">0.1</zero-pitch-trim-full-throttle>
-      </config>
-    </autopilot>
--->
-
-    <chase-distance-m>-18</chase-distance-m>
-
-    <hud>
-      <enable3d>false</enable3d>
-    </hud>
-
-    <multiplay>
-      <chat_display>1</chat_display>
-    </multiplay>
-
-    <help>
-      <title>J7W Shinden</title>
-      <line></line>
-<!--
-      <key>
-        <name>CTRL-B</name>
-        <desc>Toggle Super Charger (2 stages)</desc>
-      </key>
--->
-<!--
-      <key>
-        <name>CTRL-D</name>
-        <desc>Open / Close Canopy</desc>
-      </key>
--->
-      <key>
-        <name>Shift-d</name>
-        <desc>Decrease Hydraulic Torque Converter Pressure (Decrease Boost)</desc>
-      </key>
-      <key>
-        <name>d</name>
-        <desc>Increase Hydraulic Torque Converter Pressure (Increase Boost)</desc>
-      </key>
-      <key>
-        <name>Shift-e</name>
-        <desc>Trim Aileron right</desc>
-      </key>
-      <key>
-        <name>e</name>
-        <desc>Trim Aileron left</desc>
-      </key>
-      <key>
-        <name>Shift-f</name>
-        <desc>Decrease Water Methanol Injection</desc>
-      </key>
-      <key>
-        <name>f</name>
-        <desc>Increase Water Methanol Injection</desc>
-      </key>
-      <key>
-        <name>Shift-n</name>
-        <desc>Coarse propeller pitch</desc>
-      </key>
-      <key>
-        <name>n</name>
-        <desc>Fine propeller pitch</desc>
-      </key>
-      <text>[TAKING OFF]
-Start the aircraft with +300mmHg or higher, actuating rudder to keep it on the center line.  Pull the stick when the speed reaches at 100 kt, and you will take off at about 110 kt.  As the torque of the engine makes the airplane spin clockwise, use aileron and/or rudder to keep it stable.
-
-[CLIMBING] 
-Adjust the clumb angle within 15 degree and keep the speed higher than 120 kt with full throttle. Do not actuate the elevator rapidly, or the airplane spins like a gyro.
-
-[FLYING]
-Trim and cruise at about 2300 rpm. No rapid controls, or you get spinned like a gyro. When you sense a sign of stall, move the elevator (or other control) back a bit to stablize the aircraft.
-
-[LANDING]
-Slow down to 250 kt and make a long sweeping turn. Put the flaps down, adjusting the elevator trim so the nose doesn't fall too much. Put the gears down and make flaps full-down at 140 kt. Touch down at 100 to 120 kt pulling the nose up a bit. Making flaps up at the time of touch-down will ease nose go up a bit.
-
-[NOTE]
-Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Rapid control will get the aircraft stalled and spinned - Careful and gentle control is a "must." The use of autopilot is not recommended since some autopilot functions such as "Vertical Speed" actuate elevators rapidly, which makes the aircraft stall.
-
-
-      </text>
-    </help>
-
-    <tutorials include="j7w-tutorial.xml"/>
   </sim>
 
-  <engines>
-    <engine>
-      <rpm type="double">700</rpm>
-      <fuel-pump-psi type="double">4.55</fuel-pump-psi>
-      <oil-pressure-psi type="double">78.22</oil-pressure-psi> 
-    </engine>
-  </engines>
-
-  <consumables>
-    <fuel>
-      <tank n="0">
-	<level-gal_us>130</level-gal_us>
-      </tank>
-      <tank n="1">
-	<level-gal_us>50</level-gal_us>
-      </tank>
-    </fuel>
-  </consumables>
-
-  <instrumentation>
-    <altimeter>
-      <indicated-altitude-m type="double">0</indicated-altitude-m>
-    </altimeter>
-    <magnetic-compass>
-      <correction-deg type="double">0</correction-deg>
-    </magnetic-compass>
-  </instrumentation>  
-  
-  <controls>
-    <canopy>
-      <enabled type="bool">true</enabled>
-      <position-norm>0.0</position-norm>
-      <opened type="double" >0.0</opened>
-    </canopy>
-    <engines>
-      <engine n="0">
-	<magnetos>3</magnetos>
-	<raw-boost>0.30</raw-boost>
-	<propeller-pitch>1.0</propeller-pitch>
-      </engine>
-    </engines>
-    <gear>
-      <brake-parking>0</brake-parking>
-      <tailwheel-lock>true</tailwheel-lock>
-    </gear>
-  </controls>
-  
   <input>
    <keyboard>
-<!--
-    <key n="2">
-      <name>Ctrl-B</name>
-      <desc>Toggle engine boost.</desc>
-      <binding>
-        <command>property-adjust</command>
-        <property>/controls/engines/engine[0]/raw-boost</property>
-        <step type="double">0.33</step>
-        <min type="double">0.0</min>
-        <max type="double">1.5</max>
-      </binding>
-      <binding>
-        <condition>
-          <greater-than>
-            <property>/controls/engines/engine[0]/raw-boost</property>
-            <value type="double">1.0001</value>
-          </greater-than>
-        </condition>
-        <command>property-assign</command>
-        <property>/controls/engines/engine[0]/raw-boost</property>
-        <value type="double">0.0</value>
-      </binding>
-      <binding>        
-        <condition>    
-          <greater-than>         
-            <property>/controls/engines/engine[0]/raw-boost</property>       
-            <value type="double">0.6</value>    
-          </greater-than>        
-        </condition>   
-        <command>property-assign</command>     
-        <property>/controls/engines/engine[0]/raw-boost</property>         
-        <value type="double">1.0</value>       
-      </binding>
-    </key>
--->
-
     <key n="4">
       <name>Ctrl-D</name>
       <desc>Open/close canopy</desc>
@@ -237,17 +39,6 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
         <step type="double">-0.05</step>
         <min type="double">0.0</min>
         <max type="double">1.0</max>
-      </binding>
-    </key>
-
-    <key n="69">
-      <name>E</name>
-      <repeatable type="bool">true</repeatable>
-      <desc>Aileron trim right.</desc>
-      <binding>
-        <command>property-adjust</command>
-        <property>/controls/flight/aileron-trim</property>
-        <step type="double">0.001</step>
       </binding>
     </key>
 
@@ -277,17 +68,6 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
       </binding>
     </key>
 
-    <key n="101">
-      <name>e</name>
-      <repeatable type="bool">true</repeatable>
-      <desc>Aileron trim left.</desc>
-      <binding>
-        <command>property-adjust</command>
-        <property>/controls/flight/aileron-trim</property>
-        <step type="double">-0.001</step>
-      </binding>
-    </key>
-
     <key n="102">
       <name>f</name>
       <repeatable type="bool">true</repeatable>
@@ -302,13 +82,4 @@ Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Ra
     </key>
   </keyboard>
 </input>
-
-<nasal>
-  <j7w>
-    <file>Aircraft/j7w/Nasal/electrical.nas</file>
-    <file>Aircraft/j7w/Nasal/jwarbirds.nas</file>
-    <file>Aircraft/j7w/Nasal/j7w.nas</file>
-  </j7w>
-</nasal>
-
 </PropertyList>

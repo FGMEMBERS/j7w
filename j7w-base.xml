@@ -1,0 +1,193 @@
+<!--
+************************************************************************
+J7W Shinden by Kyushu Hikoki
+Sep 19, 2008 Tat Nishioka
+************************************************************************
+-->
+
+<PropertyList>
+  <sim>
+    <startup>
+      <splash-texture>Aircraft/j7w/splash.rgb</splash-texture>
+    </startup>
+    
+    <flight-model>yasim</flight-model>
+    <fuel-fraction>0.70</fuel-fraction>
+
+    <virtual-cockpit archive="y">true</virtual-cockpit>
+    <allow-toggle-cockpit archive="y">true</allow-toggle-cockpit>
+
+    <model>
+      <path>Aircraft/j7w/Models/j7w.xml</path>
+    </model> 
+
+    <view n="0">
+      <internal archive="y">true</internal>
+      <config>
+	<x-offset-m archive="y" type="double">0.0</x-offset-m>
+	<y-offset-m archive="y" type="double">1.37</y-offset-m>
+	<z-offset-m archive="y" type="double">-0.22</z-offset-m>
+	<pitch-offset-deg>-13.0</pitch-offset-deg>
+      </config>
+    </view>
+
+    <chase-distance-m>-18</chase-distance-m>
+
+    <hud>
+      <enable3d>false</enable3d>
+    </hud>
+
+    <multiplay>
+      <chat_display>1</chat_display>
+    </multiplay>
+
+    <help>
+      <title>J7W Shinden</title>
+      <line></line>
+      <key>
+        <name>Shift-d</name>
+        <desc>J7W: Decrease Hydraulic Torque Converter Pressure (Decrease Boost)</desc>
+      </key>
+      <key>
+        <name>d</name>
+        <desc>J7W: Increase Hydraulic Torque Converter Pressure (Increase Boost)</desc>
+      </key>
+      <key>
+        <name>Shift-e</name>
+        <desc>J7W/J7W2: Trim Aileron right</desc>
+      </key>
+      <key>
+        <name>e</name>
+        <desc>J7W/J7W2 Trim Aileron left</desc>
+      </key>
+      <key>
+        <name>Shift-f</name>
+        <desc>J7W: Decrease Water Methanol Injection</desc>
+      </key>
+      <key>
+        <name>f</name>
+        <desc>J7W: Increase Water Methanol Injection</desc>
+      </key>
+      <key>
+        <name>Shift-n</name>
+        <desc>J7W: Coarse propeller pitch</desc>
+      </key>
+      <key>
+        <name>n</name>
+        <desc>J7W: Fine propeller pitch</desc>
+      </key>
+      <text>[SRARTING ENGINE (J7W - propeller version only)]
+Turn the magneto to "both" by pressing "}" three times, and then press 's' to start engine. 
+
+[TAKING OFF]
+Actuate rudder to keep the aircraft on the center line.  Pull the stick when the speed reaches at 100 kt, and you will take off at about 110 kt.  As the torque of the engine makes the airplane spin clockwise, use aileron and/or rudder to keep it stable.
+
+[CLIMBING] 
+Adjust the clumb angle within 15 degree and keep the speed higher than 120 kt with full throttle. Do not actuate the elevator rapidly, or the airplane spins like a gyro.
+
+[FLYING]
+Trim and cruise at about 240kt. It should be around 2300 rpm for J7W. No rapid controls, or you get spinned like a gyro. When you sense a sign of stall, move the elevator (or other control) back a bit to stablize the aircraft.
+
+[LANDING]
+Slow down to 250 kt and make a long sweeping turn. Put the flaps down, adjusting the elevator trim so the nose doesn't fall too much. Put the gears down and make flaps full-down at 140 kt. Touch down at 100 to 120 kt pulling the nose up a bit. Making flaps up at the time of touch-down will ease nose go up a bit.
+
+[NOTE]
+Flaps makes the aircraft nose-down (Remember this is a canard-type aircraft). Rapid control will get the aircraft stalled and spinned - Careful and gentle control is a "must." The use of autopilot is not recommended since some autopilot functions such as "Vertical Speed" actuate elevators rapidly, which makes the aircraft stall.
+
+      </text>
+    </help>
+
+    <tutorials include="j7w-tutorial.xml"/>
+  </sim>
+
+  <engines>
+    <engine>
+      <rpm type="double">700</rpm>
+      <fuel-pump-psi type="double">4.55</fuel-pump-psi>
+      <oil-pressure-psi type="double">78.22</oil-pressure-psi> 
+    </engine>
+  </engines>
+
+  <consumables>
+    <fuel>
+      <tank n="0">
+	<level-gal_us>130</level-gal_us>
+      </tank>
+      <tank n="1">
+	<level-gal_us>50</level-gal_us>
+      </tank>
+    </fuel>
+  </consumables>
+
+  <instrumentation>
+    <altimeter>
+      <indicated-altitude-m type="double">0</indicated-altitude-m>
+    </altimeter>
+    <magnetic-compass>
+      <correction-deg type="double">0</correction-deg>
+    </magnetic-compass>
+  </instrumentation>  
+  
+  <controls>
+    <canopy>
+      <enabled type="bool">true</enabled>
+      <position-norm>0.0</position-norm>
+      <opened type="double" >0.0</opened>
+    </canopy>
+    <engines>
+      <engine n="0">
+	<magnetos>3</magnetos>
+	<raw-boost>0.30</raw-boost>
+	<propeller-pitch>1.0</propeller-pitch>
+      </engine>
+    </engines>
+    <gear>
+      <brake-parking>0</brake-parking>
+      <tailwheel-lock>true</tailwheel-lock>
+    </gear>
+  </controls>
+  
+  <input>
+   <keyboard>
+    <key n="4">
+      <name>Ctrl-D</name>
+      <desc>Open/close canopy</desc>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/canopy/opened</property>
+      </binding>
+    </key>
+
+    <key n="69">
+      <name>E</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Aileron trim right.</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/flight/aileron-trim</property>
+        <step type="double">0.001</step>
+      </binding>
+    </key>
+
+    <key n="101">
+      <name>e</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Aileron trim left.</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/flight/aileron-trim</property>
+        <step type="double">-0.001</step>
+      </binding>
+    </key>
+  </keyboard>
+</input>
+
+<nasal>
+  <j7w>
+    <file>Aircraft/j7w/Nasal/electrical.nas</file>
+    <file>Aircraft/j7w/Nasal/jwarbirds.nas</file>
+    <file>Aircraft/j7w/Nasal/j7w.nas</file>
+  </j7w>
+</nasal>
+
+</PropertyList>
