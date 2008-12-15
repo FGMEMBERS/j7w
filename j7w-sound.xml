@@ -16,7 +16,7 @@
   <crank>
    <name>crank</name>
    <mode>looped</mode>
-   <path>Aircraft/p51d/Sounds/p51d_starter.wav</path>
+   <path>Sounds/p51d_starter.wav</path>
    <condition>
     <property>/engines/engine/cranking</property>
     <not>
@@ -34,7 +34,7 @@
 
   <crank>
    <name>cough</name>
-   <path>Aircraft/p51d/Sounds/p51d_startup.wav</path>
+   <path>Sounds/p51d_startup.wav</path>
    <property>/engines/engine/running</property>
    <volume>
     <offset>-0.50</offset>
@@ -48,7 +48,7 @@
   <engine>
    <name>engine</name>
    <mode>looped</mode>
-   <path>Aircraft/p51d/Sounds/p51d_rpm1.wav</path>
+   <path>Sounds/p51d_rpm1.wav</path>
    <condition>
     <property>/engines/engine/running</property>
     <less-than>
