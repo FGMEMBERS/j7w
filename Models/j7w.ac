@@ -1,14 +1,14 @@
 AC3Db
-MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 128  trans 0
-MATERIAL "gloss" rgb 0 0 0  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0
-MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0
-MATERIAL "ac3dmat12" rgb 0.266667 0.266667 0.266667  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0
-MATERIAL "ac3dmat14" rgb 0.8 0.8 0.8  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0
-MATERIAL "ac3dmat8" rgb 0.627451 0.752941 0.878431  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0.8
-MATERIAL "gloss" rgb 0.8 0.8 0.8  amb 0 0 0  emis 0 0 0  spec 1 1 1  shi 128  trans 0
-MATERIAL "nospec" rgb 1 1 1  amb 0 0 0  emis 0 0 0  spec 0 0 0  shi 0  trans 0.5
-MATERIAL "gloss" rgb 0.8 0.8 0.8  amb 0 0 0  emis 0 0 0  spec 1 1 1  shi 14  trans 0
-MATERIAL "NoName.006" rgb 1 1 1  amb 1 1 1  emis 0 0 0  spec 1 1 1  shi 50  trans 0
+MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.8 0.8 0.8  emis 0 0 0  spec 0.2 0.2 0.2  shi 128  trans 0
+MATERIAL "gloss" rgb 0 0 0  amb 0.0 0.0 0.0  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0
+MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.8 0.8 0.8  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0
+MATERIAL "ac3dmat12" rgb 0.266667 0.266667 0.266667  amb 0.2133336 0.2133336 0.2133336  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0
+MATERIAL "ac3dmat14" rgb 0.8 0.8 0.8  amb 0.64 0.64 0.64  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0
+MATERIAL "ac3dmat8" rgb 0.627451 0.752941 0.878431  amb 0.5019608 0.6023528 0.7027448  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0.8
+MATERIAL "gloss" rgb 0.8 0.8 0.8  amb 0.64 0.64 0.64  emis 0 0 0  spec 1 1 1  shi 128  trans 0
+MATERIAL "nospec" rgb 1 1 1  amb 0.8 0.8 0.8  emis 0 0 0  spec 0 0 0  shi 0  trans 0.5
+MATERIAL "gloss" rgb 0.8 0.8 0.8  amb 0.64 0.64 0.64  emis 0 0 0  spec 1 1 1  shi 14  trans 0
+MATERIAL "NoName.006" rgb 1 1 1  amb 0.8 0.8 0.8  emis 0 0 0  spec 1 1 1  shi 50  trans 0
 OBJECT world
 kids 37
 OBJECT poly

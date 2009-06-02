@@ -1,7 +1,7 @@
 AC3Db
-MATERIAL "glow" rgb 1 1 1  amb 0.5 0.5 0.5  emis 0.8 0.8 0.8  spec 0.758915 0.758915 0.758915  shi 32  trans 0
-MATERIAL "glass" rgb 0.627451 0.752941 0.878431  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0.847
-MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.5 0.5 0.5  shi 10  trans 0
+MATERIAL "glow" rgb 1 1 1  amb 0.8 0.8 0.8  emis 0.8 0.8 0.8  spec 0.758915 0.758915 0.758915  shi 32  trans 0
+MATERIAL "glass" rgb 0.627451 0.752941 0.878431  amb 0.5019608 0.6023528 0.7027448  emis 0 0 0  spec 0.2 0.2 0.2  shi 16  trans 0.847
+MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.8 0.8 0.8  emis 0 0 0  spec 0.5 0.5 0.5  shi 10  trans 0
 OBJECT world
 kids 5
 OBJECT poly
