@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<PropertyList>
+<path>wmi.ac</path>
+
+  <animation>
+    <type>rotate</type>
+    <object-name>Pump.needle</object-name>
+    <property>/instrumentation/water-methanol-injection/pump-pressure</property>
+    <min>0</min>
+    <max>3.0</max>
+    <interpolation>
+      <entry>
+	<ind>0</ind>
+	<dep>0</dep>
+      </entry>
+      <entry>
+	<ind>3.0</ind>
+	<dep>180</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>0</x-m>
+      <y-m>-0.003</y-m>
+      <z-m>0.000</z-m>
+    </center>
+    <axis>
+      <x>-1</x>
+      <y>0</y>
+      <z>0</z>
+    </axis>
+  </animation>
+
+  <animation>
+    <type>rotate</type>
+    <object-name>Injection.needle</object-name>
+    <property>/instrumentation/water-methanol-injection/injection-pressure</property>
+    <min>0</min>
+    <max>30.0</max>
+    <interpolation>
+      <entry>
+	<ind>0</ind>
+	<dep>0</dep>
+      </entry>
+      <entry>
+	<ind>30.0</ind>
+	<dep>-180</dep>
+      </entry>
+    </interpolation>
+    <center>
+      <x-m>0</x-m>
+      <y-m>0.003</y-m>
+      <z-m>0.0</z-m>
+    </center>
+    <axis>
+      <x>-1</x>
+      <y>0</y>
+      <z>0</z>
+    </axis>
+  </animation>
+
+</PropertyList>
+

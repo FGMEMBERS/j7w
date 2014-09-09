@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+
+<!--
+************************************************************************
+J7W Shinden by Kyushu Aircraft Company
+Jan. 10 Tat Nishioka
+************************************************************************
+References
+[1] "Japanese Aircraft" by Edward T. Maloney, Planes of Fame publications
+[2] http://www.warbirds.jp/kakuki/sanko/en_japan.htm (Japanese)
+[3] http://www.geocities.co.jp/Playtown-Spade/2631/start-j.html (Japanese)
+[4] http://gunsight.jp/a/hunatu05.htm (Japanese)
+************************************************************************
+Note: This aircraft is still in its experimental stage. 
+Very unstable behavior will crash the aircraft very often, so be patient 
+or even help me make it more stable.
+
+[Engine: Ishikawajima Ne-130 axial-flow turbojet]
+Spec: approx 3000 hp / 900kgf
+
+Fuel pressure: Typ 7.0 - 7.5, Min 6.0, Max 8.0
+Oil pressure: Typ 2.2, Min ?, Max 2.2
+
+************************************************************************
+[Performance]
+
+Maximum speed: 430 kt (800 km/h) @ 8700 m (28543 ft)
+Cruise speed: 240 kt (444 km/h)  @ 3000m
+
+Power weight ratio: 320 W/kg (0.43 hp/kg, 0.20 hp/lb)
+Wing loading: 240 kg/sq m (49.155 lb/sq ft) 
+Normal range: 850 km (459 nm, 531 mi) 
+Service Ceiling: 12,000 m (39,370 ft)
+***************************************
+[Weight]
+Empty : 8,035 lbs (3,645 kg)
+Loaded: 10,864 lbs (4,928 kg)
+
+************************************
+[Measurement]
+Length 9.66 m (32 ft 7 in)
+Height  3.92 (10 ft 1 in)
+Wing span 11.11 m  (36 ft 11 in)
+Wing area 220.6 sq ft (20.5 sq m)
+
+Main Wing:
+Chord and Dihedral:
+Chord @ root: 2.39 m
+Chord @ tip: 1.25 m
+Dihedral: 3 degree
+Sweep angle: 20 degree
+Sweep Distance: 1.61 m (distance between the leading edges of the root and tip in X axis)
+Half span: 5.55 m
+%MAC Balance Point: 36
+  The follwoing values are calculated with the tool at 
+  http://www.nasascale.org/howtos/mac-calculator.htm using the parameters above.
+Sweep distance @ MAC: 0.72 m
+MAC Distance from root: 1.88 m
+Balance point @ Root chord(CG): 1.4 m
+
+[CG]
+this calculation is made with the equation obtained from: 
+http://www.paragonair.com/public/docs/FAA-Handbooks/8083-01_WnB/8083-01_ch08.pdf 
+Front Wheel pos: (1.47, 0, -2.25)
+Main wheel pos: (-2.15, -2.28, -2.15)
+Datum (Nose tip) pos : (4.89, 0, 0.37)
+Datum (D): 7.04m (277.16535 in) ahead of the main wheel
+Distance between Main wheel and front wheel (L): 3.71m (142.51969 in)
+Total Weight(W): 3,645 kg (8035 lb)
+Weight of the nose wheel (F) 8035 lb / some value between 6 and 8 = between 1004 and 1339 lb (guesstimate)
+CG offset from the nose: D - (F*L)/W = 6.44 to 6.59 m (253.41 to 259.35 in) behind the datum
+The point of the CG on the X-axis: between -1.547 to -1.698 (m).
+
+*********************************
+Fuel capacity:
+Main: 590L (156 US gal)
+Drop: 87 US gal
+
+-->
+
+<!-- Weight of everything but fuel - temporary lighter than actual weight -->
+<airplane mass="8035">
+
+  <!-- Approach configuration -->
+  <approach speed="85" aoa="15">
+    <control-setting axis="/controls/engines/engine[0]/throttle" value="0.3"/>
+    <control-setting axis="/controls/flight/flaps" value="1.0"/>
+    <control-setting axis="/controls/gear/gear-down" value="1"/>
+  </approach>
+
+  <!-- Cruise configuration -->
+  <cruise speed="430" alt="27560">
+    <control-setting axis="/controls/engines/engine[0]/throttle" value="1.0"/>
+    <control-setting axis="/controls/flight/flaps" value="0.0"/>
+    <control-setting axis="/controls/gear/gear-down" value="0"/>
+  </cruise>
+
+  <!-- pilot's eyepoint -->
+  <cockpit x="-0.30" y="0" z="1.36"/>
+
+  <fuselage ax="4.89" ay="0.0" az="0.37" bx="-4.00" by="0.0" bz="0.74"
+	    width="1.28" taper="0.3" midpoint="0.6"/>
+
+  <!--
+      Wing characteristics
+      twist is 'guesstimate'
+      aoas for the main wing and the hstab should be revised...
+    -->
+  <wing x="-2.86" y="2.48" z="0.11" taper="0.523" incidence="0.9"
+	length="5.02" chord="1.9" twist="-2.0" sweep="20" dihedral="3.0" 
+	camber="0.1" idrag="1.25">
+    <stall aoa="15" width="9" peak="1.5"/>
+    <flap0 start="0.0" end="0.4" lift="1.7" drag="1.9"/>
+    <flap1 start="0.4" end="1.0" lift="1.4" drag="1.1"/>
+    <control-input axis="/controls/flight/flaps" control="FLAP0"/>
+    <control-output control="FLAP0" prop="/surface-positions/flap-pos-norm"/>
+    <control-speed control="FLAP0" transition-time="9"/>
+    <control-input axis="/controls/flight/aileron" control="FLAP1" split="true"/>
+    <control-output control="FLAP1" side="left"
+		    prop="surface-positions/left-aileron-pos-norm"/>
+    <control-output control="FLAP1" side="right"
+		    prop="surface-positions/right-aileron-pos-norm"/>
+    <control-speed control="FLAP1" transition-time="0.2"/>
+    <control-input axis="/controls/flight/aileron-trim" control="FLAP1" split="true"/>
+  </wing>
+
+  <!-- start and end point are changed to avoid "insufficient elevator to trim for approach" -->
+  <hstab x="3.52" y="0.44" z="0.44" taper="0.439" 
+	 length="1.61" chord="0.80" twist="-1.0" sweep="-0.5" incidence="0.3" effectiveness="1.87">
+    <stall aoa="17" width="15" peak="1.5"/>
+    <flap0 start="0.0" end="1.8" lift="1.75" drag="1.5"/>
+    <control-input axis="/controls/flight/elevator" square="true" control="FLAP0" invert="true" 
+		   src0="-1" src1="1" dst0="-0.8" dst1="0.8"/>
+    <control-input axis="/controls/flight/elevator-trim" control="FLAP0" invert="true"/>
+    <control-output control="FLAP0" prop="/surface-positions/elevator-pos-norm"/>
+    <flap1 start="0.2" end="0.8" lift="1.5" drag="1.6"/>
+    <control-input axis="/controls/flight/flaps" control="FLAP1"/>
+    <control-speed control="FLAP1" transition-time="9"/>
+  </hstab>
+
+  <vstab x="-3.30" y="2.34" z="-0.6" taper="0.5" effectiveness="3.0"
+	 length="2.36" chord="1.08" sweep="2" incidence="0.0">
+    <stall aoa="14" width="4" peak="1.5"/>
+    <flap0 start="0" end="1" lift="1.3" drag="1.3"/>
+    <control-input axis="/controls/flight/rudder" square="true" control="FLAP0" invert="true"/>
+    <control-input axis="/controls/flight/rudder-trim" control="FLAP0" invert="true"/>
+    <control-output control="FLAP0" prop="/surface-positions/rudder-pos-norm"
+		    min="1" max="-1"/>
+  </vstab>
+
+  <vstab x="-3.30" y="-2.34" z="-0.6" taper="0.5" effectiveness="3.0"
+	 length="2.36" chord="1.08" sweep="2" incidence="0.0">
+    <stall aoa="14" width="4" peak="1.5"/>
+    <flap0 start="0" end="1" lift="1.3" drag="1.3"/>
+    <control-input axis="/controls/flight/rudder" square="true" control="FLAP0" invert="true"/>
+    <control-input axis="/controls/flight/rudder-trim" control="FLAP0" invert="true"/>
+    <control-output control="FLAP0" prop="/surface-positions/rudder-pos-norm"
+		    min="1" max="-1"/>
+  </vstab>
+
+  <!-- 
+    -->
+  <jet x="-1.40" y="0" z="0.54"
+       mass="2126"
+       thrust="1984"
+       n1-idle="55" n1-max="100" 
+       n2-idle="70" n2-max="103"
+       exhause-speed="800"
+       rotation="0"
+	       >
+    <actionpt x="-3.80" y="0" z="0.74"/>
+    <control-input axis="/controls/engines/engine[0]/throttle" control="THROTTLE"/>
+  </jet>
+
+  <!-- left main gear -->
+  <gear x="-2.15" y="2.28" z="-2.15" compression="0.5" spring="0.7" damp="3.0"
+	dfric="0.6" sfric ="0.70">
+    <control-input axis="/controls/gear/brake-left" control="BRAKE"/>
+    <control-input axis="/controls/gear/brake-parking" control="BRAKE" split="true"/>
+    <control-input axis="/controls/gear/gear-down" control="EXTEND"/>
+    <control-speed control="EXTEND" transition-time="6"/>
+    <control-output control="EXTEND" prop="/gear/gear[0]/position-norm"/>
+  </gear>
+
+  <!-- right main gear -->
+  <gear x="-2.15" y="-2.28" z="-2.15" compression="0.5" spring="0.7" damp="3.0"
+	dfric="0.6" sfric ="0.70">
+    <control-input axis="/controls/gear/brake-right" control="BRAKE"/>
+    <control-input axis="/controls/gear/brake-parking" control="BRAKE" split="true"/>
+    <control-input axis="/controls/gear/gear-down" control="EXTEND"/>
+    <control-speed control="EXTEND" transition-time="6"/>
+    <control-output control="EXTEND" prop="/gear/gear[1]/position-norm"/>
+  </gear>
+  
+  <!-- tail support-wheels -->
+  <gear x="-3.46" y="2.38" z="-1.36" compression="0.1" castering="0"
+	dfric="0.3" sfric ="0.40">
+  </gear>
+
+  <gear x="-3.46" y="-2.38" z="-1.36" compression="0.1" castering="0"
+	dfric="0.3" sfric ="0.40">
+  </gear>
+
+  <!-- Front gear -->
+  <gear x="1.47" y="0" z="-2.25" compression="0.5" spring="0.9" damp="2.2"
+	dfric="0.5" sfric ="0.60">
+    <control-input axis="/controls/gear/gear-down" control="EXTEND"/>
+    <control-input axis="/controls/flight/rudder" control="STEER" square="true" 
+                   src0="-1.0" src1="1.0"
+                   dst0="-0.5" dst1="0.5"/>
+    <control-speed control="EXTEND" transition-time="4"/>
+    <control-output control="EXTEND" prop="/gear/gear[2]/position-norm"/>
+  </gear>
+
+  <tank x="-1.0" y="0" z="0" capacity="482.5"/>
+
+  <!-- pilot -->
+  <ballast x="-0.3" y="0" z="0.9" mass="170"/>
+  <!-- other equipment; adjusting this makes drastic changes in flight stability -->
+  <ballast x="3.0" y="0.0" z="0.0" mass="0"/>
+  <!-- mass balance -->
+  <ballast x="-3.53" y="2.56" z="1.10" mass="15"/>
+  <ballast x="-3.53" y="-2.56" z="1.10" mass="15"/>
+<!--
+  <ballast x="-3.53" y="2.56" z="-1.10" mass="15"/>
+  <ballast x="-3.53" y="-2.56" z="-1.10" mass="15"/>
+-->
+</airplane>

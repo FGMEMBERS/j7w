@@ -1,0 +1,250 @@
+<PropertyList>
+  <tutorial>
+    <name>Take-off</name>
+    <description>
+This tutorial starts from Fukuoka Airport (RJFF) where Shinden had its first test-flight.
+Take-off and climb out at 700 m/min, continuing on the runway heading. Level off at 1000m to complete the tutorial.
+    </description>
+    <timeofday>noon</timeofday>
+
+    <presets>
+      <airport-id>RJFF</airport-id>
+      <on-ground>1</on-ground>
+      <runway>34</runway>
+      <altitude-ft>-9999</altitude-ft>
+      <latitude-deg>33.57500162</latitude-deg>
+      <longitude-deg>130.4581262</longitude-deg>
+      <heading-deg>330.35</heading-deg>
+      <airspeed-kt>0</airspeed-kt>
+      <glideslope-deg>0</glideslope-deg>
+      <offset-azimuth-deg>0</offset-azimuth-deg>
+      <offset-distance-nm>0</offset-distance-nm>
+    </presets>
+
+    <init>
+      <set>
+        <property>/controls/gear/brake-parking</property>
+        <value>1</value>
+      </set>
+      <set>
+        <property>/controls/flight/flaps</property>
+        <value>0.0</value>
+      </set>
+      <set>
+        <property>/controls/engines/engine/magnetos</property>
+        <value>3</value>
+      </set>
+      <set>
+        <property>/controls/engines/engine/throttle</property>
+        <value>0.0</value>
+      </set>
+      <set>
+        <property>/engines/engine/running</property>
+        <value>true</value>
+      </set>
+      <set>
+        <property>/environment/weather-scenario</property>
+        <value>Fair weather</value>
+      </set>
+      <set>
+        <property>/controls/flight/elevator-trim</property>
+        <value>0.0</value>
+      </set>
+      <set>
+        <property>/controls/flight/aileron-trim</property>
+        <value>0.0</value>
+      </set>
+    </init>
+
+    <step>
+      <message>Release the parking brakes, smoothly apply full power and start your take-off.</message>
+      <error>
+        <message>Apply full throttle for take-off.</message>
+        <condition>
+          <less-than>
+            <property>/controls/engines/engine/throttle</property>
+            <value>0.95</value>
+          </less-than>
+        </condition>
+      </error>
+      <error>
+        <message>Release the parking brake using Shift B</message>
+        <condition>
+          <equals>
+            <property>/controls/gear/brake-parking</property>
+            <value>1</value>
+          </equals>
+        </condition>
+      </error>
+      <exit>
+        <condition>
+          <greater-than>
+            <property>/velocities/airspeed-kt</property>
+            <value>5.0</value>
+          </greater-than>
+        </condition>
+      </exit>
+    </step>
+
+    <step>
+      <message>Stay on the center-line of the runway using the rudder.</message>
+      <exit>
+        <condition>
+          <greater-than>
+            <property>/velocities/airspeed-kt</property>
+            <value>80.0</value>
+          </greater-than>
+        </condition>
+      </exit>
+    </step>
+
+    <step>
+      <message>Pull the yoke half way down at 100kts and take off at about 105kt.
+Putting the yoke to the left a bit to eliminate the moment produced by the propeller.</message>
+      <exit>
+        <condition>
+          <greater-than>
+            <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
+            <value>10</value>
+          </greater-than>
+        </condition>
+      </exit>
+    </step>
+
+    <step>
+      <message>Rotate at 140 knots and climb straight out on heading 240 at 750 m/min.</message>
+      <error>
+        <message>Put the landing gear up</message>
+        <condition>
+          <equals>
+            <property>/controls/gear/gear-down</property>
+            <value>1</value>
+          </equals>
+        </condition>
+      </error>
+      <exit>
+        <condition>
+          <and>
+            <greater-than>
+              <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
+              <value>2400</value>
+            </greater-than>
+            <greater-than>
+              <property>/instrumentation/heading-indicator/indicated-heading-deg</property>
+              <value>235</value>
+            </greater-than>
+            <less-than>
+              <property>/instrumentation/heading-indicator/indicated-heading-deg</property>
+              <value>245</value>
+            </less-than>
+          </and>
+        </condition>
+      </exit>
+    </step>
+
+    <step>
+      <message>Continue your climb on heading 240 at 750 m/min to 1000 m.</message>
+      <error>
+        <message>Your climb angle is too shallow - raise the nose slightly to increase your climb rate.</message>
+        <condition>
+          <less-than>
+            <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
+            <value>1640</value> <!-- 500m/min -->
+          </less-than>
+        </condition>
+      </error>
+      <error>
+        <message>Your climb angle is too great - lower the nose slightly to decrease your climb rate.</message>
+        <condition>
+          <greater-than>
+            <property>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
+            <value>2952</value> <!-- 900m/min -->
+          </greater-than>
+        </condition>
+      </error>
+      <error>
+        <message>You are heading too far left, Turn right slightly to heading 240.</message>
+        <condition>
+          <less-than>
+            <property>/instrumentation/heading-indicator/indicated-heading-deg</property>
+            <value>235</value>
+          </less-than>
+        </condition>
+      </error>
+      <error>
+        <message>You are heading too far right, Turn left slightly to heading 240.</message>
+        <condition>
+          <greater-than>
+            <property>/instrumentation/heading-indicator/indicated-heading-deg</property>
+            <value>245</value>
+          </greater-than>
+        </condition>
+      </error>
+      <error>
+        <message>You are in danger of being "behind the power curve". Drop the nose to speed up to 120 knots.</message>
+        <condition>
+          <less-than>
+            <property>/velocities/airspeed-kt</property>
+            <value>120.0</value>
+          </less-than>
+        </condition>
+      </error>
+      <exit>
+       <condition>
+         <greater-than>
+           <property>/instrumentation/altimeter/indicated-altitude-m</property>
+           <value>1000</value>
+         </greater-than>
+       </condition>
+      </exit>
+    </step>
+
+    <step>
+      <message>Level off at between 1000 and 1050 m.</message>
+      <error>
+        <message>You are too low</message>
+        <condition>
+          <less-than>
+            <property>/instrumentation/altimeter/indicated-altitude-m</property>
+            <value>1000</value>
+          </less-than>
+        </condition>
+      </error>
+      <error>
+        <message>You are too high</message>
+        <condition>
+          <greater-than>
+            <property>/instrumentation/altimeter/indicated-altitude-m</property>
+            <value>1050</value>
+          </greater-than>
+        </condition>
+      </error>
+      <exit>
+        <condition>
+          <and>
+            <greater-than>
+              <property>/instrumentation/altimeter/indicated-altitude-m</property>
+              <value>1000</value>
+            </greater-than>
+            <less-than>
+              <property>/instrumentation/altimeter/indicated-altitude-m</property>
+              <value>1050</value>
+            </less-than>
+            <less-than>
+              <property>instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
+              <value>150</value>
+            </less-than>
+            <greater-than>
+              <property>instrumentation/vertical-speed-indicator/indicated-speed-fpm</property>
+              <value>-150</value>
+            </greater-than>
+          </and>
+        </condition>
+      </exit>
+    </step>
+
+    <end>
+      <message>Congratulations, you've successfully taken off. Now try landing!</message>
+    </end>
+  </tutorial>
+</PropertyList>

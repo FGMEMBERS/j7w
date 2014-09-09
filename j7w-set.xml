@@ -1,0 +1,85 @@
+<!--
+************************************************************************
+J7W Shinden by Kyushu Hikoki
+Jan. 10 Tat Nishioka
+************************************************************************
+-->
+
+<PropertyList include="j7w-base.xml">
+  <sim>
+    <description>J7W Shinden</description>
+    <author>Tat Nishioka</author>
+    <status>development</status>
+
+    <aero>j7w</aero>
+
+    <sound>
+      <path>Aircraft/j7w/j7w-sound.xml</path>
+    </sound>
+  </sim>
+
+  <input>
+   <keyboard>
+    <key n="4">
+      <name>Ctrl-D</name>
+      <desc>Open/close canopy</desc>
+      <binding>
+        <command>property-toggle</command>
+        <property>controls/canopy/opened</property>
+      </binding>
+    </key>
+
+    <key n="68">
+      <name>D</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Decrease Hydraulic Torque Converter Pressure.</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/engines/engine/raw-boost</property>
+        <step type="double">-0.05</step>
+        <min type="double">0.0</min>
+        <max type="double">1.0</max>
+      </binding>
+    </key>
+
+    <key n="70">
+      <name>F</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Decrease Water Methanol Injection</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/engines/engine/water-methanol-injection</property>
+        <step type="double">-0.1</step>
+        <min type="double">0.0</min>
+        <max type="double">1.0</max>
+      </binding>
+    </key>
+
+    <key n="100">
+      <name>d</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Increase Hydraulic Torque Converter Pressure.</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/engines/engine/raw-boost</property>
+        <step type="double">0.05</step>
+        <min type="double">0.0</min>
+        <max type="double">1.0</max>
+      </binding>
+    </key>
+
+    <key n="102">
+      <name>f</name>
+      <repeatable type="bool">true</repeatable>
+      <desc>Increase Water Methanol Injection</desc>
+      <binding>
+        <command>property-adjust</command>
+        <property>/controls/engines/engine/water-methanol-injection</property>
+        <step type="double">0.1</step>
+        <min type="double">0.0</min>
+        <max type="double">1.0</max>
+      </binding>
+    </key>
+  </keyboard>
+</input>
+</PropertyList>

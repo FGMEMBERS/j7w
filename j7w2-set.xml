@@ -1,0 +1,20 @@
+<!--
+************************************************************************
+J7W2 Shinden by Kyushu Hikoki
+Sep 20, 2008 Tat Nishioka
+************************************************************************
+-->
+
+<PropertyList include="j7w-base.xml">
+  <sim>
+    <description>J7W2 Shinden (jet)</description>
+    <author>Tat Nishioka</author>
+    <status>development</status>
+    
+    <aero>j7w2</aero>
+
+    <sound>
+      <path>Aircraft/j7w/j7w2-sound.xml</path>
+    </sound>
+  </sim>
+</PropertyList>
