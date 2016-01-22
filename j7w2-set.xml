@@ -10,9 +10,11 @@ Sep 20, 2008 Tat Nishioka
     <description>J7W2 Shinden (jet)</description>
     <author>Tat Nishioka</author>
     <status>development</status>
-    
+
     <aero>j7w2</aero>
 
+    <variant-of>j7w</variant-of>
+    
     <sound>
       <path>Aircraft/j7w/j7w2-sound.xml</path>
     </sound>
